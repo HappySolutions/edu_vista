@@ -1,3 +1,4 @@
+import 'package:edu_vista/pages/on_boarding_page.dart';
 import 'package:edu_vista/pages/splash_page.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +15,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'PlusJakartaSans',
         scaffoldBackgroundColor: ColorUtility.scaffoldBackground,
         colorScheme: ColorScheme.fromSeed(seedColor: ColorUtility.main),
         useMaterial3: true,
       ),
-      home: const SplashPage(),
+      home: const OnBoardingPage(),
     );
   }
 }
