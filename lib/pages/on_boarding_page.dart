@@ -33,6 +33,16 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         subTitle: 'View in which courses you are enrolled'),
   ];
 
+  final Duration _duration = const Duration(milliseconds: 500);
+
+  final Curve _curve = Curves.ease;
+
+  void onPageChanged(int index) {
+    setState(() {
+      current = index;
+    });
+  }
+
   @override
   void initState() {
     pageController = PageController(
@@ -58,77 +68,84 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  child: const Text(
-                    'skip',
-                    style: TextStyle(color: ColorUtility.mediumBlack),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()));
-                  },
-                )
+                    child: const Text(
+                      'skip',
+                      style: TextStyle(color: ColorUtility.mediumBlack),
+                    ),
+                    onPressed: () {
+                      pageController.animateToPage(4,
+                          duration: _duration, curve: _curve);
+                    })
               ],
             ),
             Expanded(
+              flex: 3,
               child: PageView(
+                onPageChanged: onPageChanged,
+                physics: const NeverScrollableScrollPhysics(),
                 controller: pageController,
                 scrollDirection: Axis.horizontal,
                 children: onboardingItems,
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: onboardingItems.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () => pageController.animateToPage(entry.key,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.linear),
-                  child: Container(
-                    width: 20.0,
-                    height: 10.0,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        shape: BoxShape.rectangle,
-                        color: (Theme.of(context).brightness == Brightness.dark
-                                ? ColorUtility.secondry
-                                : ColorUtility.mediumBlack)
-                            .withOpacity(current == entry.key ? 0.9 : 0.4)),
-                  ),
-                );
-              }).toList(),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Expanded(
+              flex: 1,
+              child: Column(
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorUtility.secondry,
-                      foregroundColor: Colors.white,
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(24),
-                    ),
-                    child: const Icon(Icons.arrow_back_ios_outlined),
-                    onPressed: () => pageController.previousPage(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.linear),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: onboardingItems.asMap().entries.map((entry) {
+                      return Container(
+                        width: entry.key == current ? 30 : 20,
+                        height: 10.0,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 4.0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            shape: BoxShape.rectangle,
+                            color: (entry.key == current
+                                    ? ColorUtility.secondry
+                                    : ColorUtility.mediumBlack)
+                                .withOpacity(current == entry.key ? 0.9 : 0.4)),
+                      );
+                    }).toList(),
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorUtility.secondry,
-                      foregroundColor: Colors.white,
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        current == 0
+                            ? const SizedBox.shrink()
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: ColorUtility.secondry,
+                                  foregroundColor: Colors.white,
+                                  shape: const CircleBorder(),
+                                  padding: const EdgeInsets.all(15),
+                                ),
+                                child:
+                                    const Icon(Icons.arrow_back_ios_outlined),
+                                onPressed: () => pageController.previousPage(
+                                    duration: _duration, curve: _curve),
+                              ),
+                        current == 3
+                            ? const SizedBox.shrink()
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: ColorUtility.secondry,
+                                  foregroundColor: Colors.white,
+                                  shape: const CircleBorder(),
+                                  padding: const EdgeInsets.all(15),
+                                ),
+                                child:
+                                    const Icon(Icons.arrow_forward_ios_rounded),
+                                onPressed: () => pageController.nextPage(
+                                    duration: _duration, curve: _curve),
+                              ),
+                      ],
                     ),
-                    child: const Icon(Icons.arrow_forward_ios_rounded),
-                    onPressed: () => pageController.nextPage(
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.linear),
                   ),
                 ],
               ),
