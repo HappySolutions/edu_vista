@@ -92,23 +92,12 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               flex: 1,
               child: Column(
                 children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: onboardingItems.asMap().entries.map((entry) {
-                      return Container(
-                        width: entry.key == current ? 30 : 20,
-                        height: 10.0,
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            shape: BoxShape.rectangle,
-                            color: (entry.key == current
-                                    ? ColorUtility.secondry
-                                    : ColorUtility.mediumBlack)
-                                .withOpacity(current == entry.key ? 0.9 : 0.4)),
-                      );
-                    }).toList(),
+                    children: drawIndicators(),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -154,5 +143,22 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         ),
       ),
     );
+  }
+
+  List<Container> drawIndicators() {
+    return onboardingItems.asMap().entries.map((entry) {
+      return Container(
+        width: entry.key == current ? 30 : 20,
+        height: 10.0,
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            shape: BoxShape.rectangle,
+            color: (entry.key == current
+                    ? ColorUtility.secondry
+                    : ColorUtility.mediumBlack)
+                .withOpacity(current == entry.key ? 0.9 : 0.4)),
+      );
+    }).toList();
   }
 }
