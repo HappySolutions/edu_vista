@@ -4,34 +4,52 @@ import 'package:edu_vista/utils/image.utility.dart';
 import 'package:edu_vista/widgets/onBoarding/on_boarding_item.dart';
 import 'package:flutter/material.dart';
 
-class OnBoardingPage extends StatelessWidget {
+class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final pageController = PageController(
+  State<OnBoardingPage> createState() => _OnBoardingPageState();
+}
+
+class _OnBoardingPageState extends State<OnBoardingPage> {
+  late PageController pageController;
+  int current = 0;
+  var onboardingItems = const [
+    OnBoardingItemWidget(
+        image: ImageUtility.badges,
+        title: 'Certification and Badges',
+        subTitle: 'Earn a certificate after completion of every course'),
+    OnBoardingItemWidget(
+        image: ImageUtility.progressTracking,
+        title: 'Progress Tracking',
+        subTitle: 'Check your Progress of every course'),
+    OnBoardingItemWidget(
+        image: ImageUtility.offline,
+        title: 'Offline Access',
+        subTitle: 'Make your course available offline'),
+    OnBoardingItemWidget(
+        image: ImageUtility.courseCategory,
+        title: 'Course Catalog',
+        subTitle: 'View in which courses you are enrolled'),
+  ];
+
+  @override
+  void initState() {
+    pageController = PageController(
       initialPage: 0,
       viewportFraction: 1,
     );
-    const int current = 0;
-    var onboardingItems = const [
-      OnBoardingItemWidget(
-          image: ImageUtility.badges,
-          title: 'Certification and Badges',
-          subTitle: 'Earn a certificate after completion of every course'),
-      OnBoardingItemWidget(
-          image: ImageUtility.progressTracking,
-          title: 'Progress Tracking',
-          subTitle: 'Check your Progress of every course'),
-      OnBoardingItemWidget(
-          image: ImageUtility.offline,
-          title: 'Offline Access',
-          subTitle: 'Make your course available offline'),
-      OnBoardingItemWidget(
-          image: ImageUtility.courseCategory,
-          title: 'Course Catalog',
-          subTitle: 'View in which courses you are enrolled'),
-    ];
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Column(
