@@ -60,53 +60,53 @@ class OnBoardingPage extends StatelessWidget {
                 children: onboardingItems,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: onboardingItems.asMap().entries.map((entry) {
-                  return GestureDetector(
-                    onTap: () => pageController.animateToPage(entry.key,
-                        duration: const Duration(milliseconds: 500),
-                        curve: Curves.linear),
-                    child: Container(
-                      width: 20.0,
-                      height: 10.0,
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 4.0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          shape: BoxShape.rectangle,
-                          color: (Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? ColorUtility.secondry
-                                  : ColorUtility.mediumBlack)
-                              .withOpacity(current == entry.key ? 0.9 : 0.4)),
-                    ),
-                  );
-                }).toList(),
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: onboardingItems.asMap().entries.map((entry) {
+                return GestureDetector(
+                  onTap: () => pageController.animateToPage(entry.key,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.linear),
+                  child: Container(
+                    width: 20.0,
+                    height: 10.0,
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 4.0),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        shape: BoxShape.rectangle,
+                        color: (Theme.of(context).brightness == Brightness.dark
+                                ? ColorUtility.secondry
+                                : ColorUtility.mediumBlack)
+                            .withOpacity(current == entry.key ? 0.9 : 0.4)),
+                  ),
+                );
+              }).toList(),
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  MaterialButton(
-                    color: ColorUtility.secondry,
-                    textColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorUtility.secondry,
+                      foregroundColor: Colors.white,
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(24),
+                    ),
                     child: const Icon(Icons.arrow_back_ios_outlined),
                     onPressed: () => pageController.previousPage(
                         duration: const Duration(milliseconds: 500),
                         curve: Curves.linear),
                   ),
-                  MaterialButton(
-                    color: ColorUtility.secondry,
-                    textColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorUtility.secondry,
+                      foregroundColor: Colors.white,
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(24),
+                    ),
                     child: const Icon(Icons.arrow_forward_ios_rounded),
                     onPressed: () => pageController.nextPage(
                         duration: const Duration(milliseconds: 500),
