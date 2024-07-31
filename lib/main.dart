@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         fontFamily: 'PlusJakartaSans',
+        scaffoldBackgroundColor: ColorUtility.scaffoldBackground,
         colorScheme: ColorScheme.fromSeed(seedColor: ColorUtility.main),
         useMaterial3: true,
       ),
