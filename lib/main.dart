@@ -1,16 +1,22 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:edu_vista/pages/on_boarding_page.dart';
 import 'package:edu_vista/pages/splash_page.dart';
 import 'package:edu_vista/utils/color.utility.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) {
+      return const MyApp();
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
