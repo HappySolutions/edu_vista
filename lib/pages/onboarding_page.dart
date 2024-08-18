@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:edu_vista/pages/login_page.dart';
 import 'package:edu_vista/services/pref.service.dart';
 import 'package:edu_vista/utils/color.utility.dart';
@@ -7,7 +9,6 @@ import 'package:edu_vista/widgets/onboarding/elevated_button_rounded.dart';
 import 'package:edu_vista/widgets/onboarding/onboard_indicator.dart';
 import 'package:edu_vista/widgets/onboarding/onboard_item_widget.dart';
 import 'package:flutter/material.dart';
-// import 'package:smooth_page_indicator/smooth_page_indicator.dart'
 
 class OnBoardingPage extends StatefulWidget {
   static const String id = 'OnBoardingPage';

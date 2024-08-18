@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
+          const Center(
             child: Text('Firebase Auth Status'),
           ),
           Center(
@@ -29,22 +29,22 @@ class _HomePageState extends State<HomePage> {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (ctx, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
                 if (snapshot.data != null) {
-                  return Text('Logged In');
+                  return const Text('Logged In');
                 } else {
-                  return Text('Not Logged In');
+                  return const Text('Not Logged In');
                 }
               }),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
               Navigator.pushNamed(context, LoginPage.id);
             },
-            child: Text('go'),
+            child: const Text('go'),
           )
         ],
       ),

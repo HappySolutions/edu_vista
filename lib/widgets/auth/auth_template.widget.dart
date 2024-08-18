@@ -81,7 +81,7 @@ class _AuthTemplateWidgetState extends State<AuthTemplateWidget> {
                               decoration: const BoxDecoration(
                                   color: Colors.white, shape: BoxShape.circle),
                               child: Image.asset(
-                                'assets/images/facebook-64.png',
+                                '/images/facebook-64.png',
                                 width: 80,
                                 height: 80,
                               ),
@@ -106,7 +106,7 @@ class _AuthTemplateWidgetState extends State<AuthTemplateWidget> {
                     backgroundColor: Colors.white,
                     onPressed: () {},
                     child: Image.asset(
-                      'assets/images/google.png',
+                      '/images/google.png',
                       width: 35,
                       height: 40,
                     ),
