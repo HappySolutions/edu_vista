@@ -1,18 +1,20 @@
-import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit() : super(AuthInitial());
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<void> login({
+    required BuildContext context,
     required TextEditingController emailController,
     required TextEditingController passwordController,
   }) async {
     try {
-      var credentials = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      var credentials = await auth.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );

@@ -1,7 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/firebase_options.dart';
-import 'package:edu_vista/pages/on_boarding_page.dart';
+import 'package:edu_vista/pages/onboarding_page.dart';
 import 'package:edu_vista/pages/splash_page.dart';
 import 'package:edu_vista/services/pref.service.dart';
 import 'package:edu_vista/utils/color.utility.dart';
@@ -59,11 +59,12 @@ class MyApp extends StatelessWidget {
         final Map? data = settings.arguments as Map?;
         switch (routeName) {
           case LoginPage.id:
-            return MaterialPageRoute(builder: (context) => LoginPage());
+            return MaterialPageRoute(builder: (context) => const LoginPage());
           case SignUpPage.id:
-            return MaterialPageRoute(builder: (context) => SignUpPage());
+            return MaterialPageRoute(builder: (context) => const SignUpPage());
           case ResetPasswordPage.id:
-            return MaterialPageRoute(builder: (context) => ResetPasswordPage());
+            return MaterialPageRoute(
+                builder: (context) => const ResetPasswordPage());
           case OnBoardingPage.id:
             return MaterialPageRoute(
                 builder: (context) => const OnBoardingPage());
