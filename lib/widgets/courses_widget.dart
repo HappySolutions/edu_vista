@@ -48,24 +48,58 @@ class _CoursesWidgetState extends State<CoursesWidget> {
           shrinkWrap: true,
           crossAxisCount: 2,
           children: List.generate(courses.length, (index) {
-            return Column(children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(40),
-                child: Image.network(courses[index].image ?? 'No Name'),
-              ),
-              Row(children: [
-                const Text('******'),
-                Text(courses[index].title ?? 'No Name'),
-              ]),
-              Text(courses[index].title ?? 'No Name'),
-              Row(children: [
-                const Icon(Icons.percent_outlined),
-                Text(courses[index].instructor?.name ?? 'No Name')
-              ]),
-              Text(
-                courses[index].price.toString(),
-              ),
-            ]);
+            return Container(
+              color: Colors.green,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        courses[index].image ?? 'No Name',
+                        height: 100, // Adjust height to fit within grid item
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          courses[index].rating.toString(),
+                          style: const TextStyle(fontSize: 8.0),
+                        ),
+                        const SizedBox(width: 4.0),
+                        const Icon(Icons.star, size: 10.0),
+                      ],
+                    ),
+                    Text(
+                      courses[index].title ?? 'No Name',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10.0,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.person_2_outlined, size: 10.0),
+                        const SizedBox(width: 4.0),
+                        Text(
+                          courses[index].instructor?.name ?? 'No Name',
+                          style: const TextStyle(fontSize: 8.0),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      courses[index].price.toString(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10.0,
+                      ),
+                    ),
+                  ]),
+            );
           }),
         );
       },

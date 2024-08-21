@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(10.0),
           child: Column(
             children: [
               LabelWidget(
@@ -41,14 +41,6 @@ class _HomePageState extends State<HomePage> {
               const CoursesWidget(
                 rankValue: 'top rated',
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    await FirebaseFirestore.instance
-                        .collection('test')
-                        .doc('x')
-                        .delete();
-                  },
-                  child: const Text('test'))
             ],
           ),
         ),
