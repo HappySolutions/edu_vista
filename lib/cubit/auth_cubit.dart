@@ -1,3 +1,4 @@
+import 'package:edu_vista/pages/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,9 +19,15 @@ class AuthCubit extends Cubit<AuthState> {
         email: emailController.text,
         password: passwordController.text,
       );
+      if (!context.mounted) return;
 
       if (credentials.user != null) {
-        emit(LoginSuccess());
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('You Logged In Successfully.'),
+          ),
+        );
+        Navigator.pushReplacementNamed(context, HomePage.id);
       }
     } on FirebaseAuthException catch (e) {
       if (!context.mounted) return;
@@ -82,6 +89,7 @@ class AuthCubit extends Cubit<AuthState> {
             content: Text('Account created successfully'),
           ),
         );
+        Navigator.pushReplacementNamed(context, HomePage.id);
       }
     } on FirebaseAuthException catch (e) {
       if (!context.mounted) return;
