@@ -17,4 +17,7 @@ abstract class PreferencesService {
 
   static set isOnBoardingSeen(bool value) =>
       prefs!.setBool('isOnBoardingSeen', value);
+
+  static String get authAction => prefs!.getString('authAction') ?? '';
+  static set authAction(String value) => prefs!.setString('authAction', value);
 }

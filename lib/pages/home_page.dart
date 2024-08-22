@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edu_vista/services/pref.service.dart';
 import 'package:edu_vista/widgets/categories_widget.dart';
 import 'package:edu_vista/widgets/courses_widget.dart';
 import 'package:edu_vista/widgets/label_widget.dart';
@@ -18,8 +19,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            'Welcome Back! ${FirebaseAuth.instance.currentUser?.displayName}'),
+        title: Text((PreferencesService.authAction == 'signup')
+            ? 'Welcome ${FirebaseAuth.instance.currentUser?.displayName}'
+            : 'Welcome Back! ${FirebaseAuth.instance.currentUser?.displayName}'),
       ),
       body: SafeArea(
         child: Padding(

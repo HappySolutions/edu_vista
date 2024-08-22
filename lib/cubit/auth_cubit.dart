@@ -1,4 +1,5 @@
 import 'package:edu_vista/pages/home_page.dart';
+import 'package:edu_vista/services/pref.service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +28,7 @@ class AuthCubit extends Cubit<AuthState> {
             content: Text('You Logged In Successfully.'),
           ),
         );
+        PreferencesService.authAction = 'login';
         Navigator.pushReplacementNamed(context, HomePage.id);
       }
     } on FirebaseAuthException catch (e) {
@@ -89,6 +91,7 @@ class AuthCubit extends Cubit<AuthState> {
             content: Text('Account created successfully'),
           ),
         );
+        PreferencesService.authAction = 'signup';
         Navigator.pushReplacementNamed(context, HomePage.id);
       }
     } on FirebaseAuthException catch (e) {
