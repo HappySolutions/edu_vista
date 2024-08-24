@@ -15,7 +15,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 40,
+        height: 50,
         child: FutureBuilder(
             future: futureCall,
             builder: (ctx, snapshot) {

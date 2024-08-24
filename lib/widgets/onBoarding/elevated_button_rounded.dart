@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ElevatedButtonRounded extends StatelessWidget {
   void Function()? onPressed;
-  MaterialStateProperty<Color?>? backgroundColor;
+  WidgetStateProperty<Color?>? backgroundColor;
   Widget? icon;
 
   ElevatedButtonRounded(
@@ -16,14 +15,14 @@ class ElevatedButtonRounded extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ButtonStyle(
-        fixedSize: MaterialStateProperty.all(const Size(65, 65)),
-        foregroundColor: MaterialStateProperty.all<Color>(
+        fixedSize: WidgetStateProperty.all(const Size(65, 65)),
+        foregroundColor: WidgetStateProperty.all<Color>(
           Colors.white,
         ),
-        padding: MaterialStateProperty.all<EdgeInsets>(
-          EdgeInsets.all(15),
+        padding: WidgetStateProperty.all<EdgeInsets>(
+          const EdgeInsets.all(15),
         ),
-        shape: MaterialStateProperty.all<CircleBorder>(CircleBorder()),
+        shape: WidgetStateProperty.all<CircleBorder>(const CircleBorder()),
         backgroundColor: backgroundColor,
       ),
       onPressed: onPressed,

@@ -1,6 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:edu_vista/pages/login_page.dart';
+import 'package:edu_vista/pages/auth/login_page.dart';
 import 'package:edu_vista/services/pref.service.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:edu_vista/utils/image_utility.dart';

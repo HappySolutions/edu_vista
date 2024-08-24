@@ -1,4 +1,4 @@
-import 'package:edu_vista/pages/home_page.dart';
+import 'package:edu_vista/pages/home/home_page.dart';
 import 'package:edu_vista/services/pref.service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

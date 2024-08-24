@@ -1,5 +1,5 @@
-import 'package:edu_vista/pages/login_page.dart';
-import 'package:edu_vista/pages/signup_page.dart';
+import 'package:edu_vista/pages/auth/login_page.dart';
+import 'package:edu_vista/pages/auth/signup_page.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:edu_vista/widgets/Custom_text_button.dart';
 import 'package:edu_vista/widgets/custom_elevated_button.dart';
