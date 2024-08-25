@@ -66,16 +66,19 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         }),
         children: [
           BottomNavBarItem(
-            icon: Icons.list_outlined,
+            icon: Icons.home,
           ),
           BottomNavBarItem(
-            icon: Icons.timelapse,
+            icon: Icons.book,
           ),
           BottomNavBarItem(
-            icon: Icons.access_alarms,
+            icon: Icons.search,
           ),
           BottomNavBarItem(
             icon: Icons.chat,
+          ),
+          BottomNavBarItem(
+            icon: Icons.person,
           ),
         ],
       ),

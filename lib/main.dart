@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
       ),
       onGenerateRoute: (settings) {
         final String routeName = settings.name ?? '';
-        final Map? data = settings.arguments as Map?;
+        final dynamic data = settings.arguments;
         switch (routeName) {
           case LoginPage.id:
             return MaterialPageRoute(builder: (context) => const LoginPage());
@@ -87,7 +87,9 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => const SearchPage());
           case CourseDetailsPage.id:
             return MaterialPageRoute(
-                builder: (context) => const CourseDetailsPage());
+                builder: (context) => CourseDetailsPage(
+                      course: data,
+                    ));
 
           default:
             return MaterialPageRoute(builder: (context) => const SplashPage());

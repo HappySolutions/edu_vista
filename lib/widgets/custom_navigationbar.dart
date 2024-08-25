@@ -33,7 +33,6 @@ class _BottomNavBarState extends State<BottomNavBar> {
             topLeft: Radius.circular(10), topRight: Radius.circular(10)),
         border: Border.all(
           width: 0.1,
-          // assign the color to the border color
           color: Colors.grey,
         ),
       ),

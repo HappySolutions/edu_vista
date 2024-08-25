@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/models/course.dart';
+import 'package:edu_vista/pages/course/course_details_apge.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:flutter/material.dart';
 import 'package:async_builder/async_builder.dart';
@@ -50,65 +51,71 @@ class _CoursesWidgetState extends State<CoursesWidget> {
           crossAxisCount: 2,
           childAspectRatio: 0.7,
           children: List.generate(courses.length, (index) {
-            return SizedBox(
-              width: 160,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      courses[index].image ?? 'No Name',
-                      height: 100, // Adjust height to fit within grid item
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(height: 5), // Space between elements
-                  Row(
-                    children: [
-                      Text(
-                        courses[index].rating.toString(),
-                        style: const TextStyle(
-                            fontSize: 10.0, color: ColorUtility.main),
+            return InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, CourseDetailsPage.id,
+                    arguments: courses[index]);
+              },
+              child: SizedBox(
+                width: 160,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        courses[index].image ?? 'No Name',
+                        height: 100, // Adjust height to fit within grid item
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
-                      const SizedBox(width: 4.0),
-                      const Icon(Icons.star,
-                          size: 15, color: ColorUtility.main),
-                    ],
-                  ),
-                  Text(
-                    courses[index].title ?? 'No Name',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12.0,
                     ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(width: 8.0),
-                  Row(
-                    children: [
-                      const Icon(Icons.person_2_outlined),
-                      Text(
-                        courses[index].instructor?.name ?? 'No Name',
-                        style: const TextStyle(
-                            fontSize: 10.0, fontWeight: FontWeight.w400),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8.0), // Space between elements
-                  Text(
-                    '\$${courses[index].price.toString()}',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w800,
+                    const SizedBox(height: 5), // Space between elements
+                    Row(
+                      children: [
+                        Text(
+                          courses[index].rating.toString(),
+                          style: const TextStyle(
+                              fontSize: 10.0, color: ColorUtility.main),
+                        ),
+                        const SizedBox(width: 4.0),
+                        const Icon(Icons.star,
+                            size: 15, color: ColorUtility.main),
+                      ],
+                    ),
+                    Text(
+                      courses[index].title ?? 'No Name',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
                         fontSize: 12.0,
-                        color: ColorUtility.main),
-                  ),
-                ],
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(width: 8.0),
+                    Row(
+                      children: [
+                        const Icon(Icons.person_2_outlined),
+                        Text(
+                          courses[index].instructor?.name ?? 'No Name',
+                          style: const TextStyle(
+                              fontSize: 10.0, fontWeight: FontWeight.w400),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8.0), // Space between elements
+                    Text(
+                      '\$${courses[index].price.toString()}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 12.0,
+                          color: ColorUtility.main),
+                    ),
+                  ],
+                ),
               ),
             );
           }),
@@ -117,4 +124,3 @@ class _CoursesWidgetState extends State<CoursesWidget> {
     );
   }
 }
-

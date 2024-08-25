@@ -1,0 +1,9 @@
+part of 'course_bloc.dart';
+
+@immutable
+sealed class CourseEvent {}
+
+class CourseFetchEvent extends CourseEvent {
+  final Course course;
+  CourseFetchEvent(this.course);
+}
