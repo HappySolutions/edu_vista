@@ -5,7 +5,7 @@ import 'package:edu_vista/pages/search/search_page.dart';
 import 'package:edu_vista/services/pref.service.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:edu_vista/widgets/categories_widget.dart';
-import 'package:edu_vista/widgets/courses_widget.dart';
+import 'package:edu_vista/widgets/course/courses_widget.dart';
 import 'package:edu_vista/widgets/custom_navigationbar.dart';
 import 'package:edu_vista/widgets/label_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage> {
   final List<Widget> _screens = [
     const HomePage(),
     const CategoriesPage(),
@@ -101,6 +101,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
               const CoursesWidget(
                 rankValue: 'top rated',
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              LabelWidget(
+                name: 'Top Seller Courses',
+                onSeeAllClicked: () {},
+              ),
+              const CoursesWidget(
+                rankValue: 'top seller',
               ),
             ],
           ),

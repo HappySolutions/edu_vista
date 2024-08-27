@@ -1,8 +1,12 @@
+import 'package:edu_vista/blocs/course/course_bloc.dart';
 import 'package:edu_vista/models/course.dart';
-import 'package:edu_vista/utils/color.utility.dart';
+import 'package:edu_vista/utils/app_enums.dart';
+import 'package:edu_vista/widgets/course/course_options_widget.dart';
+// import 'package:edu_vista/utils/color.utility.dart';
 import 'package:edu_vista/widgets/lecture_ships_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:video_box/video_box.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:video_box/video_box.dart';
 
 class CourseDetailsPage extends StatefulWidget {
   static const String id = 'course_details';
@@ -16,6 +20,13 @@ class CourseDetailsPage extends StatefulWidget {
 
 class _CourseDetailsPageState extends State<CourseDetailsPage> {
   double? height;
+
+  @override
+  void initState() {
+    context.read<CourseBloc>().add(CourseFetchEvent(widget.course));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,11 +75,34 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                             fontWeight: FontWeight.w400, fontSize: 17),
                       ),
                       const SizedBox(height: 15),
-                      LectureChipsWidget(onChanged: (courseOptions) {
-                        setState(() {
-                          height = MediaQuery.sizeOf(context).height - 220;
-                        });
-                      })
+                      Expanded(
+                        child: BlocBuilder<CourseBloc, CourseState>(
+                          builder: (context, state) {
+                            return Column(children: [
+                              LectureChipsWidget(
+                                selectedOption:
+                                    (state is CourseOptionStateChanges)
+                                        ? state.courseOption
+                                        : null,
+                                onChanged: (courseOptions) {
+                                  context.read<CourseBloc>().add(
+                                      CourseOptionChosenEvent(courseOptions));
+                                },
+                              ),
+                              const SizedBox(height: 10),
+                              Expanded(
+                                child: (state is CourseOptionStateChanges)
+                                    ? CourseOptionsWidget(
+                                        courseOption: state.courseOption,
+                                        course:
+                                            context.read<CourseBloc>().course!,
+                                      )
+                                    : const SizedBox.shrink(),
+                              ),
+                            ]);
+                          },
+                        ),
+                      ),
                     ]),
               ),
             ),
