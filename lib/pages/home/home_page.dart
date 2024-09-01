@@ -85,34 +85,36 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              LabelWidget(
-                name: 'Categories',
-                onSeeAllClicked: () {},
-              ),
-              const CategoriesWidget(),
-              const SizedBox(
-                height: 20,
-              ),
-              LabelWidget(
-                name: 'Top Rated Courses',
-                onSeeAllClicked: () {},
-              ),
-              const CoursesWidget(
-                rankValue: 'top rated',
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              LabelWidget(
-                name: 'Top Seller Courses',
-                onSeeAllClicked: () {},
-              ),
-              const CoursesWidget(
-                rankValue: 'top seller',
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                LabelWidget(
+                  name: 'Categories',
+                  onSeeAllClicked: () {},
+                ),
+                const CategoriesWidget(),
+                const SizedBox(
+                  height: 20,
+                ),
+                LabelWidget(
+                  name: 'Top Rated Courses',
+                  onSeeAllClicked: () {},
+                ),
+                const CoursesWidget(
+                  rankValue: 'top rated',
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                LabelWidget(
+                  name: 'Top Seller Courses',
+                  onSeeAllClicked: () {},
+                ),
+                const CoursesWidget(
+                  rankValue: 'top seller',
+                ),
+              ],
+            ),
           ),
         ),
       ),

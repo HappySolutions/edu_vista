@@ -8,8 +8,12 @@ import 'package:edu_vista/utils/app_enums.dart';
 class CourseOptionsWidget extends StatefulWidget {
   final CourseOptions courseOption;
   final Course course;
+  final void Function(Lecture) onLectureClicked;
   const CourseOptionsWidget(
-      {required this.courseOption, required this.course, super.key});
+      {required this.courseOption,
+      required this.onLectureClicked,
+      required this.course,
+      super.key});
 
   @override
   State<CourseOptionsWidget> createState() => _CourseOptionsWidgetState();
@@ -57,7 +61,7 @@ class _CourseOptionsWidgetState extends State<CourseOptionsWidget> {
               childAspectRatio: 0.7,
               children: List.generate(lectures.length, (index) {
                 return InkWell(
-                  onTap: () {},
+                  onTap: () => widget.onLectureClicked(lectures[index]),
                   child: SizedBox(
                     width: 160,
                     child: Column(
