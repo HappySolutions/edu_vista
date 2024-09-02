@@ -1,3 +1,4 @@
+import 'package:edu_vista/utils/color.utility.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavBarItem {
@@ -87,27 +88,27 @@ class _NavBarItemState extends State<NavBarItem> {
       onTap: () {
         widget.onTap();
       },
-      child: AnimatedContainer(
-        margin: const EdgeInsets.all(8),
-        duration: const Duration(milliseconds: 300),
-        constraints: BoxConstraints(minWidth: widget.selected ? 100 : 56),
-        height: 56,
-        decoration: BoxDecoration(
-          color: widget.selected
-              ? widget.backgroundColor ?? Colors.white
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              widget.item.icon,
-              color: widget.selected ? Colors.black : Colors.grey,
+      child: Column(
+        children: [
+          Container(
+            height: 10,
+            decoration: BoxDecoration(
+              color: widget.selected ? ColorUtility.deepYellow : Colors.grey,
+              borderRadius: BorderRadius.circular(16),
             ),
-          ],
-        ),
+          ),
+          Icon(
+            widget.item.icon,
+            color: widget.selected ? ColorUtility.deepYellow : Colors.grey,
+          ),
+        ],
       ),
     );
   }
 }
+            // AnimatedContainer(
+          //   margin: const EdgeInsets.all(8),
+          //   duration: const Duration(milliseconds: 300),
+          //   constraints: BoxConstraints(minWidth: widget.selected ? 100 : 56),
+            
+          // ),

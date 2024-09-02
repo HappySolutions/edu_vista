@@ -1,6 +1,6 @@
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/widgets/auth/auth_template.widget.dart';
-import 'package:edu_vista/widgets/custom_text_form_field.dart';
+import 'package:edu_vista/widgets/general/custom_text_form_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

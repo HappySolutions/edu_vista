@@ -4,7 +4,7 @@ import 'package:edu_vista/pages/auth/login_page.dart';
 import 'package:edu_vista/services/pref.service.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:edu_vista/utils/image_utility.dart';
-import 'package:edu_vista/widgets/custom_elevated_button.dart';
+import 'package:edu_vista/widgets/general/custom_elevated_button.dart';
 import 'package:edu_vista/widgets/onboarding/elevated_button_rounded.dart';
 import 'package:edu_vista/widgets/onboarding/onboard_indicator.dart';
 import 'package:edu_vista/widgets/onboarding/onboard_item_widget.dart';

@@ -1,10 +1,12 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:edu_vista/blocs/course/course_bloc.dart';
+import 'package:edu_vista/blocs/lecture/lecture_bloc.dart';
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/firebase_options.dart';
 import 'package:edu_vista/pages/categories/categories_page.dart';
 import 'package:edu_vista/pages/chat/chat_page.dart';
-import 'package:edu_vista/pages/course/course_details_apge.dart';
+import 'package:edu_vista/pages/course/course_details_page.dart';
+import 'package:edu_vista/pages/home/homepage_view.dart';
 import 'package:edu_vista/pages/onboarding/onboarding_page.dart';
 import 'package:edu_vista/pages/onboarding/splash_page.dart';
 import 'package:edu_vista/pages/profile/profile_page.dart';
@@ -12,7 +14,6 @@ import 'package:edu_vista/pages/search/search_page.dart';
 import 'package:edu_vista/services/pref.service.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,18 +35,20 @@ void main() async {
     print('Failed to initialize Firebase: $e');
   }
 
-  runApp(MultiBlocProvider(
-    providers: [
+  runApp(
+    MultiBlocProvider(providers: [
       BlocProvider(create: (ctx) => AuthCubit()),
       BlocProvider(create: (ctx) => CourseBloc()),
-    ],
-    child: DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) {
-        return const MyApp();
-      },
-    ),
-  ));
+      BlocProvider(create: (ctx) => LectureBloc()),
+    ], child: const MyApp()
+        // DevicePreview(
+        //   enabled: !kReleaseMode,
+        //   builder: (context) {
+        //     return const MyApp();
+        //   },
+        // ),
+        ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -79,6 +82,9 @@ class MyApp extends StatelessWidget {
                 builder: (context) => const OnBoardingPage());
           case HomePage.id:
             return MaterialPageRoute(builder: (context) => const HomePage());
+          case HomePageView.id:
+            return MaterialPageRoute(
+                builder: (context) => const HomePageView());
           case CategoriesPage.id:
             return MaterialPageRoute(
                 builder: (context) => const CategoriesPage());

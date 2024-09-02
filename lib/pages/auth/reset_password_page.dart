@@ -1,5 +1,5 @@
-import 'package:edu_vista/widgets/custom_elevated_button.dart';
-import 'package:edu_vista/widgets/custom_text_form_field.dart';
+import 'package:edu_vista/widgets/general/custom_elevated_button.dart';
+import 'package:edu_vista/widgets/general/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordPage extends StatefulWidget {

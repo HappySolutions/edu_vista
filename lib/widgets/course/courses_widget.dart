@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/models/course.dart';
-import 'package:edu_vista/pages/course/course_details_apge.dart';
+import 'package:edu_vista/pages/course/course_details_page.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:flutter/material.dart';
 import 'package:async_builder/async_builder.dart';
@@ -58,6 +58,7 @@ class _CoursesWidgetState extends State<CoursesWidget> {
               },
               child: SizedBox(
                 width: 160,
+                height: 160,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
