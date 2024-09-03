@@ -1,4 +1,5 @@
 import 'package:edu_vista/models/chat_message.dart';
+import 'package:edu_vista/utils/app_enums.dart';
 import 'package:edu_vista/widgets/chat/chat_input_widget.dart';
 import 'package:edu_vista/widgets/chat/messages/message_widget.dart';
 import 'package:flutter/material.dart';

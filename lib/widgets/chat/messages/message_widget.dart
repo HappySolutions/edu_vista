@@ -1,5 +1,5 @@
 import 'package:edu_vista/models/chat_message.dart';
-import 'package:edu_vista/pages/chat/chat_page.dart';
+import 'package:edu_vista/utils/app_enums.dart';
 import 'package:edu_vista/widgets/chat/messages/audio_message_widget.dart';
 import 'package:edu_vista/widgets/chat/messages/message_status_widget.dart';
 import 'package:edu_vista/widgets/chat/messages/text_message_widget.dart';

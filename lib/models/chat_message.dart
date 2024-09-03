@@ -1,3 +1,5 @@
+import 'package:edu_vista/utils/app_enums.dart';
+
 class ChatMessage {
   final String text;
   final ChatMessageType messageType;
@@ -11,7 +13,3 @@ class ChatMessage {
     required this.isSender,
   });
 }
-
-enum ChatMessageType { text, audio, image, video }
-
-enum MessageStatus { notSent, notView, viewed }

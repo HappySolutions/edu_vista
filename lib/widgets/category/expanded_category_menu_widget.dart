@@ -1,8 +1,8 @@
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:flutter/material.dart';
 
-class ProfileMenu extends StatelessWidget {
-  const ProfileMenu({
+class ExpandedCategoryMenuItem extends StatefulWidget {
+  const ExpandedCategoryMenuItem({
     super.key,
     required this.text,
     this.press,
@@ -11,6 +11,12 @@ class ProfileMenu extends StatelessWidget {
   final String text;
   final VoidCallback? press;
 
+  @override
+  State<ExpandedCategoryMenuItem> createState() =>
+      _ExpandedCategoryMenuItemState();
+}
+
+class _ExpandedCategoryMenuItemState extends State<ExpandedCategoryMenuItem> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,12 +28,12 @@ class ProfileMenu extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
           backgroundColor: ColorUtility.grayExtraLight,
         ),
-        onPressed: press,
+        onPressed: widget.press,
         child: Row(
           children: [
             Expanded(
               child: Text(
-                text,
+                widget.text,
                 style: const TextStyle(
                   color: ColorUtility.mediumlBlack,
                 ),

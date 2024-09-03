@@ -1,4 +1,4 @@
-import 'package:edu_vista/models/chat_message.dart';
+import 'package:edu_vista/utils/app_enums.dart';
 import 'package:flutter/material.dart';
 
 class MessageStatusDot extends StatelessWidget {
