@@ -1,5 +1,7 @@
+import 'package:async_builder/async_builder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/models/category_data.dart';
+import 'package:edu_vista/pages/categories/category_courses_page.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesWidget extends StatefulWidget {
@@ -15,51 +17,45 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 50,
-        child: FutureBuilder(
-            future: futureCall,
-            builder: (ctx, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+      height: 50,
+      child: AsyncBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        future: futureCall,
+        waiting: (context) => const Center(child: CircularProgressIndicator()),
+        error: (context, error, stackTrace) => Text('Error! $error'),
+        builder: (ctx, value) {
+          if ((value?.docs.isEmpty ?? false)) {
+            return const Center(
+              child: Text('No categories found'),
+            );
+          }
+          List<CategoryData> categories = List<CategoryData>.from(value?.docs
+                  .map((e) => CategoryData.fromJson({'id': e.id, ...e.data()}))
+                  .toList() ??
+              []);
 
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text('Error occurred'),
-                );
-              }
-
-              if (!snapshot.hasData || (snapshot.data?.docs.isEmpty ?? false)) {
-                return const Center(
-                  child: Text('No categories found'),
-                );
-              }
-
-              var categories = List<CategoryData>.from(snapshot.data?.docs
-                      .map((e) =>
-                          CategoryData.fromJson({'id': e.id, ...e.data()}))
-                      .toList() ??
-                  []);
-
-              return ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: categories.length,
-                separatorBuilder: (context, index) => const SizedBox(
-                  width: 10,
+          return ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: categories.length,
+            separatorBuilder: (context, index) => const SizedBox(
+              width: 10,
+            ),
+            itemBuilder: (context, index) => GestureDetector(
+              onTap: () => Navigator.pushNamed(context, CategoryCoursesPage.id,
+                  arguments: categories[index]),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: const Color(0xffE0E0E0),
+                  borderRadius: BorderRadius.circular(40),
                 ),
-                itemBuilder: (context, index) => Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xffE0E0E0),
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: Center(
-                    child: Text(categories[index].name ?? 'No Name'),
-                  ),
+                child: Center(
+                  child: Text(categories[index].name ?? 'No Name'),
                 ),
-              );
-            }));
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

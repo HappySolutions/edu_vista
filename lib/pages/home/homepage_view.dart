@@ -1,3 +1,6 @@
+import 'package:edu_vista/pages/categories/categories_page.dart';
+import 'package:edu_vista/pages/course/top_rated_courses_page.dart';
+import 'package:edu_vista/pages/course/top_seller_courses_page.dart';
 import 'package:edu_vista/widgets/category/categories_widget.dart';
 import 'package:edu_vista/widgets/course/courses_widget.dart';
 import 'package:edu_vista/widgets/general/label_widget.dart';
@@ -23,7 +26,8 @@ class _HomePageViewState extends State<HomePageView> {
             children: [
               LabelWidget(
                 name: 'Categories',
-                onSeeAllClicked: () {},
+                onSeeAllClicked: () =>
+                    Navigator.pushNamed(context, CategoriesPage.id),
               ),
               const CategoriesWidget(),
               const SizedBox(
@@ -31,7 +35,8 @@ class _HomePageViewState extends State<HomePageView> {
               ),
               LabelWidget(
                 name: 'Top Rated Courses',
-                onSeeAllClicked: () {},
+                onSeeAllClicked: () =>
+                    Navigator.pushNamed(context, TopRatedCoursesPage.id),
               ),
               const CoursesWidget(
                 rankValue: 'top rated',
@@ -41,7 +46,8 @@ class _HomePageViewState extends State<HomePageView> {
               ),
               LabelWidget(
                 name: 'Top Seller Courses',
-                onSeeAllClicked: () {},
+                onSeeAllClicked: () =>
+                    Navigator.pushNamed(context, TopSellerCoursesPage.id),
               ),
               const CoursesWidget(
                 rankValue: 'top seller',

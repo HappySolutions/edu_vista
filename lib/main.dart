@@ -4,8 +4,11 @@ import 'package:edu_vista/blocs/lecture/lecture_bloc.dart';
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/firebase_options.dart';
 import 'package:edu_vista/pages/categories/categories_page.dart';
+import 'package:edu_vista/pages/categories/category_courses_page.dart';
 import 'package:edu_vista/pages/chat/chat_page.dart';
 import 'package:edu_vista/pages/course/course_details_page.dart';
+import 'package:edu_vista/pages/course/top_rated_courses_page.dart';
+import 'package:edu_vista/pages/course/top_seller_courses_page.dart';
 import 'package:edu_vista/pages/home/homepage_view.dart';
 import 'package:edu_vista/pages/onboarding/onboarding_page.dart';
 import 'package:edu_vista/pages/onboarding/splash_page.dart';
@@ -94,10 +97,22 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (context) => const ProfilePage());
           case SearchPage.id:
             return MaterialPageRoute(builder: (context) => const SearchPage());
+          case TopSellerCoursesPage.id:
+            return MaterialPageRoute(
+                builder: (context) => const TopSellerCoursesPage());
+          case TopRatedCoursesPage.id:
+            return MaterialPageRoute(
+                builder: (context) => const TopRatedCoursesPage());
+
           case CourseDetailsPage.id:
             return MaterialPageRoute(
                 builder: (context) => CourseDetailsPage(
                       course: data,
+                    ));
+          case CategoryCoursesPage.id:
+            return MaterialPageRoute(
+                builder: (context) => CategoryCoursesPage(
+                      categoryData: data,
                     ));
 
           default:
