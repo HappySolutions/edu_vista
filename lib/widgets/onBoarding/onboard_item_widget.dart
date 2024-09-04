@@ -18,8 +18,9 @@ class OnBoardItemWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
+        children: [
           Image.asset(
+            height: 250,
             image,
           ),
           const SizedBox(
@@ -41,9 +42,8 @@ class OnBoardItemWidget extends StatelessWidget {
               color: ColorUtility.gray,
             ),
           ),
-          // ignore: prefer_const_constructors
-          SizedBox(
-            height: 70,
+          const SizedBox(
+            height: 20,
           )
         ],
       ),

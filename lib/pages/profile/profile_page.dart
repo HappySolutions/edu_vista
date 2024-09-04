@@ -26,10 +26,6 @@ class ProfilePage extends StatelessWidget {
               press: () {},
             ),
             ProfileMenu(
-              text: "Settings",
-              press: () {},
-            ),
-            ProfileMenu(
               text: "Achivements",
               press: () {},
             ),

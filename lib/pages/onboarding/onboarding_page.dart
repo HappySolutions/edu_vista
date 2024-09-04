@@ -48,33 +48,30 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     return Scaffold(
       body: SafeArea(
         child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  currentIndex == 3
-                      ? TextButton(
-                          onPressed: () {
-                            _skipFunction(2);
-                          },
-                          child: const Text(
-                            'Back',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w400),
-                          ))
-                      : TextButton(
-                          onPressed: () {
-                            _skipFunction(3);
-                          },
-                          child: const Text(
-                            'Skip',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w400),
-                          )),
-                ],
-              ),
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                currentIndex == 3
+                    ? TextButton(
+                        onPressed: () {
+                          _skipFunction(2);
+                        },
+                        child: const Text(
+                          'Back',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w400),
+                        ))
+                    : TextButton(
+                        onPressed: () {
+                          _skipFunction(3);
+                        },
+                        child: const Text(
+                          'Skip',
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w400),
+                        )),
+              ],
             ),
             const SizedBox(
               height: 50,
@@ -111,46 +108,47 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               ),
             ),
             Expanded(
+                flex: 1,
                 child: Column(
-              children: [
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    OnBoardIndicator(
-                      positionIndex: 0,
-                      currentIndex: currentIndex,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        OnBoardIndicator(
+                          positionIndex: 0,
+                          currentIndex: currentIndex,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        OnBoardIndicator(
+                          positionIndex: 1,
+                          currentIndex: currentIndex,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        OnBoardIndicator(
+                          positionIndex: 2,
+                          currentIndex: currentIndex,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        OnBoardIndicator(
+                          positionIndex: 3,
+                          currentIndex: currentIndex,
+                        ),
+                      ],
                     ),
                     const SizedBox(
-                      width: 10,
+                      height: 30,
                     ),
-                    OnBoardIndicator(
-                      positionIndex: 1,
-                      currentIndex: currentIndex,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    OnBoardIndicator(
-                      positionIndex: 2,
-                      currentIndex: currentIndex,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    OnBoardIndicator(
-                      positionIndex: 3,
-                      currentIndex: currentIndex,
-                    ),
+                    getButtons
                   ],
-                ),
-                const SizedBox(
-                  height: 80,
-                ),
-                getButtons
-              ],
-            )),
+                )),
           ],
         ),
       ),
