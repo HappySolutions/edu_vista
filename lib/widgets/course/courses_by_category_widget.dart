@@ -48,6 +48,8 @@ class _CoursesByCategoryWidgetState extends State<CoursesByCategoryWidget> {
             []);
 
         return GridView.count(
+          //TODO Review this property
+          semanticChildCount: 2,
           mainAxisSpacing: 15,
           crossAxisSpacing: 15,
           shrinkWrap: true,
