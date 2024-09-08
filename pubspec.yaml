@@ -47,6 +47,7 @@ dependencies:
     git:
       url: https://github.com/mahmoudelgharabawi/flutter_video_box.git
   flutter_svg: ^2.0.10+1
+  file_picker: ^8.0.7
 dev_dependencies:
   flutter_test:
     sdk: flutter

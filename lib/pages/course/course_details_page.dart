@@ -67,6 +67,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
 
             return SizedBox(
               height: 250,
+              width: double.infinity,
               child: stateEx.lecture.lecture_url == null ||
                       stateEx.lecture.lecture_url == ''
                   ? const Center(
