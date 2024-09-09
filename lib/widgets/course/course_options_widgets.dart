@@ -6,6 +6,7 @@ import 'package:edu_vista/utils/app_enums.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CourseOptionsWidgets extends StatefulWidget {
   final CourseOptions courseOption;
@@ -108,5 +109,15 @@ class _CourseOptionsWidgetsState extends State<CourseOptionsWidgets> {
       default:
         return Text('Invalid option ${widget.courseOption.name}');
     }
+  }
+}
+
+//TODO check this func
+void launchURL() async {
+  const url = 'https:website.com';
+  if (await canLaunchUrl(url as Uri)) {
+    await launchUrl(url as Uri);
+  } else {
+    throw 'Could not launch $url';
   }
 }

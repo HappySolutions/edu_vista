@@ -48,6 +48,9 @@ dependencies:
       url: https://github.com/mahmoudelgharabawi/flutter_video_box.git
   flutter_svg: ^2.0.10+1
   file_picker: ^8.0.7
+  paymob_payment: ^0.0.1+1
+  flutter_dotenv: ^5.1.0
+  url_launcher: ^6.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -74,6 +77,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - dotenv
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

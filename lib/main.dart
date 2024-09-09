@@ -3,6 +3,8 @@ import 'package:edu_vista/blocs/course/course_bloc.dart';
 import 'package:edu_vista/blocs/lecture/lecture_bloc.dart';
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/firebase_options.dart';
+import 'package:edu_vista/pages/cart/cart_page.dart';
+import 'package:edu_vista/pages/cart/checkout_page.dart';
 import 'package:edu_vista/pages/categories/categories_page.dart';
 import 'package:edu_vista/pages/categories/category_courses_page.dart';
 import 'package:edu_vista/pages/chat/chat_page.dart';
@@ -26,6 +28,7 @@ import 'package:edu_vista/pages/home/home_page.dart';
 import 'package:edu_vista/pages/auth/login_page.dart';
 import 'package:edu_vista/pages/auth/reset_password_page.dart';
 import 'package:edu_vista/pages/auth/signup_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +40,7 @@ void main() async {
   } catch (e) {
     print('Failed to initialize Firebase: $e');
   }
-
+  await dotenv.load(fileName: "dotenv");
   runApp(
     MultiBlocProvider(providers: [
       BlocProvider(create: (ctx) => AuthCubit()),
@@ -103,7 +106,11 @@ class MyApp extends StatelessWidget {
           case TopRatedCoursesPage.id:
             return MaterialPageRoute(
                 builder: (context) => const TopRatedCoursesPage());
-
+          case CheckoutPage.id:
+            return MaterialPageRoute(
+                builder: (context) => const CheckoutPage());
+          case CartPage.id:
+            return MaterialPageRoute(builder: (context) => const CartPage());
           case CourseDetailsPage.id:
             return MaterialPageRoute(
                 builder: (context) => CourseDetailsPage(
