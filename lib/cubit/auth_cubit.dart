@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/pages/home/home_page.dart';
 import 'package:edu_vista/services/pref.service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -81,9 +82,26 @@ class AuthCubit extends Cubit<AuthState> {
         email: emailController.text,
         password: passwordController.text,
       );
-      if (credentials.user != null) {
-        credentials.user!.updateDisplayName(nameController.text);
+      User? user = credentials.user;
 
+      if (user != null) {
+        user.updateDisplayName(nameController.text);
+        final QuerySnapshot result = await FirebaseFirestore.instance
+            .collection('users')
+            .where('id', isEqualTo: user.uid)
+            .get();
+        final List<DocumentSnapshot> document = result.docs;
+        if (document.isEmpty) {
+          FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+            'id': user.uid,
+            'name': nameController.text,
+            'password': passwordController.text,
+            'email': emailController.text,
+            'photo_url': user.photoURL,
+            'created_at': DateTime.now().millisecondsSinceEpoch.toString(),
+            'phone_number': ''
+          });
+        }
         if (!context.mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -114,6 +132,30 @@ class AuthCubit extends Cubit<AuthState> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Sign up Exception $e'),
+        ),
+      );
+    }
+  }
+
+  Future<void> logout() async {}
+
+  Future<void> resetPassword({
+    required BuildContext context,
+    required TextEditingController emailController,
+  }) async {
+    try {
+      await auth
+          .sendPasswordResetEmail(email: emailController.text)
+          .then((value) => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Password reset link sent. Check your email.'),
+                ),
+              ));
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Reset Password Exception $e'),
         ),
       );
     }

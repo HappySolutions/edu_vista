@@ -28,7 +28,7 @@ class OnBoardItemWidget extends StatelessWidget {
           ),
           Text(
             title,
-            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
           ),
           const SizedBox(
             height: 15,

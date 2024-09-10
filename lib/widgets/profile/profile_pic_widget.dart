@@ -1,4 +1,9 @@
-import 'package:edu_vista/services/pref.service.dart';
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edu_vista/models/user_image.dart';
+import 'package:edu_vista/models/user_model.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:edu_vista/utils/image_utility.dart';
 import 'package:file_picker/file_picker.dart';
@@ -17,19 +22,68 @@ class ProfilePic extends StatefulWidget {
 }
 
 class _ProfilePicState extends State<ProfilePic> {
-  late String? userImage;
-  String? updatedImg;
+  String _photoUrl = '';
+  UserModel? _user;
+  String _uid = '';
 
   @override
   void initState() {
-    userImage = FirebaseAuth.instance.currentUser?.photoURL;
-    if (userImage!.isNotEmpty) {
-      print('Imge is accessed successfully');
-    } else {
-      userImage = 'https://i.postimg.cc/0jqKB6mS/Profile-Image.png';
-    }
-
+    init();
     super.initState();
+  }
+
+  init() async {
+    _uid = FirebaseAuth.instance.currentUser!.uid;
+    _user = await getInfoFirestore(_uid);
+    _photoUrl = _user?.photo_url ?? '';
+  }
+
+  Future<UserModel> getInfoFirestore(String uid) async {
+    DocumentSnapshot result =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    return UserModel.fromDocument(result);
+  }
+
+  Future<String?> uploadFile(String fileName, String filePath) async {
+    FirebaseStorage firebaseStorage = FirebaseStorage.instance;
+    File file = File(filePath);
+    try {
+      await firebaseStorage.ref('images/$fileName').putFile(file);
+      return await firebaseStorage.ref('images/$fileName').getDownloadURL();
+    } on FirebaseException catch (e) {
+      print(e.message ?? '');
+      return null;
+    }
+  }
+
+  Future<UserImage> getFile() async {
+    final filePicker = await FilePicker.platform.pickFiles();
+    final path = filePicker?.files.single.path ?? '';
+    final fileName = filePicker?.files.single.name ?? '';
+
+    return UserImage(path: path, file_name: fileName);
+  }
+
+  Future<void> uploadDataFirestore(
+    String collectionPath,
+    String path,
+    Map<String, dynamic> dataNeedUpdate,
+  ) async {
+    return FirebaseFirestore.instance
+        .collection(collectionPath)
+        .doc(path)
+        .update(dataNeedUpdate)
+        .then((value) {
+      const snackBar = SnackBar(
+        content: Text('Updated Successfuly'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }).catchError((e) {
+      const snackBar = SnackBar(
+        content: Text('Error Happend'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    });
   }
 
   @override
@@ -41,8 +95,16 @@ class _ProfilePicState extends State<ProfilePic> {
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(userImage!),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(70),
+            child: CachedNetworkImage(
+              imageUrl: _photoUrl,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+              width: 140,
+              height: 140,
+              fit: BoxFit.cover,
+            ),
           ),
           Positioned(
             right: -16,
@@ -60,25 +122,17 @@ class _ProfilePicState extends State<ProfilePic> {
                   backgroundColor: const Color(0xFFF5F6F9),
                 ),
                 onPressed: () async {
-                  try {
-                    var imageResult = await FilePicker.platform
-                        .pickFiles(type: FileType.image, withData: true);
-                    if (imageResult != null) {
-                      updatedImg = imageResult.files.first.name;
-                    } else {
-                      print('>>>>>>>>>>error Not getting Image');
-                    }
-                    await FirebaseAuth.instance.currentUser
-                        ?.updatePhotoURL(updatedImg);
-                    if (!context.mounted) return;
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Image Updated successfully'),
-                      ),
-                    );
-                  } catch (e) {
-                    print('>>>>>>>>>>error $e');
+                  final getImage = await getFile();
+                  if (getImage.path.isNotEmpty) {
+                    _photoUrl =
+                        await uploadFile(getImage.file_name, getImage.path) ??
+                            '';
+                  }
+                  setState(() {});
+                  if (_photoUrl.isNotEmpty) {
+                    await uploadDataFirestore('users', _uid, {
+                      'photo_url': _photoUrl,
+                    });
                   }
                 },
                 child: SvgPicture.string(ImageUtility.picIcon),

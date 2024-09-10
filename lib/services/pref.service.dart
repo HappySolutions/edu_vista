@@ -21,6 +21,5 @@ abstract class PreferencesService {
   static String get authAction => prefs!.getString('authAction') ?? '';
   static set authAction(String value) => prefs!.setString('authAction', value);
 
-  static String get userImage => prefs!.getString('userImage') ?? '';
-  static set userImage(String value) => prefs!.setString('userImage', value);
+  static void clearData() => prefs!.clear();
 }

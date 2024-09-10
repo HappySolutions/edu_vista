@@ -9,6 +9,7 @@ import 'package:edu_vista/widgets/lecture/video_box.widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class CourseDetailsPage extends StatefulWidget {
   static const String id = 'course_details';
@@ -116,11 +117,38 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text(
-                          widget.course.instructor?.name ??
-                              'No Instructor Name',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w400, fontSize: 17),
+                        Row(
+                          children: [
+                            Text(
+                              widget.course.instructor?.name ??
+                                  'No Instructor Name',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w400, fontSize: 17),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                String uid =
+                                    FirebaseAuth.instance.currentUser!.uid;
+                                const uuid = Uuid();
+                                final idCourseToCart = uuid.v4();
+                                FirebaseFirestore.instance
+                                    .collection('cart')
+                                    .doc(idCourseToCart)
+                                    .set({
+                                  'id': idCourseToCart,
+                                  'userId': uid,
+                                  'title': widget.course.title,
+                                  'image': widget.course.image,
+                                  'category': widget.course.category,
+                                  'currency': widget.course.currency,
+                                  'instructor': widget.course.instructor?.name,
+                                  'price': widget.course.price,
+                                  'rank': widget.course.rank,
+                                });
+                              },
+                              child: const Text('Add To Cart'),
+                            ),
+                          ],
                         ),
                         const SizedBox(
                           height: 10,

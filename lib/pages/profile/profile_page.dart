@@ -1,3 +1,7 @@
+// ignore_for_file: avoid_print
+
+import 'package:edu_vista/pages/auth/login_page.dart';
+import 'package:edu_vista/services/pref.service.dart';
 import 'package:edu_vista/widgets/profile/profile_menu_widget.dart';
 import 'package:edu_vista/widgets/profile/profile_pic_widget.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +25,9 @@ class ProfilePage extends StatelessWidget {
             const SizedBox(height: 20),
             ProfileMenu(
               text: "Edit",
-              press: () => {},
+              press: () {
+                Navigator.pushNamed(context, 'edit_settings');
+              },
             ),
             ProfileMenu(
               text: "Settings",
@@ -54,7 +60,10 @@ class ProfilePage extends StatelessWidget {
             ),
             ProfileMenu(
               text: "Log Out",
-              press: () {},
+              press: () {
+                PreferencesService.clearData();
+                Navigator.popAndPushNamed(context, 'LoginPage');
+              },
             ),
           ],
         ),

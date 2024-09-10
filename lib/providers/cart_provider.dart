@@ -20,9 +20,9 @@ class CartProvider {
         print('No Courses Found');
       }
 
-      _cartCourses = List<CartCourses>.from(value.docs
-          .map((e) => CartCourses.fromJson({'id': e.id, ...e.data()}))
-          .toList());
+      // _cartCourses = List<CartCourses>.from(value.docs
+      //     .map((e) => CartCourses.fromJson({'id': e.id, ...e.data()}))
+      //     .toList());
 
       return _cartCourses;
     } catch (e) {

@@ -33,7 +33,7 @@ class CartCoursesTile extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
-                      cartCourse.course?.image ?? 'No Name',
+                      cartCourse.image ?? 'No Name',
                       height: 100,
                       width: double.infinity,
                       fit: BoxFit.cover,
@@ -43,7 +43,7 @@ class CartCoursesTile extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        cartCourse.course!.rating.toString(),
+                        cartCourse.rating.toString(),
                         style: const TextStyle(
                             fontSize: 10.0, color: ColorUtility.main),
                       ),
@@ -53,7 +53,7 @@ class CartCoursesTile extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    cartCourse.course?.title ?? 'No Name',
+                    cartCourse.title ?? 'No Name',
                     style: const TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 12.0,
@@ -67,7 +67,7 @@ class CartCoursesTile extends StatelessWidget {
                     children: [
                       const Icon(Icons.person_2_outlined),
                       Text(
-                        cartCourse.course?.instructor?.name ?? 'No Name',
+                        cartCourse.instructor?.name ?? 'No Name',
                         style: const TextStyle(
                             fontSize: 10.0, fontWeight: FontWeight.w400),
                         maxLines: 1,
@@ -77,7 +77,7 @@ class CartCoursesTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 8.0), // Space between elements
                   Text(
-                    '\$${cartCourse.course?.price.toString()}',
+                    '\$${cartCourse.price.toString()}',
                     style: const TextStyle(
                         fontWeight: FontWeight.w800,
                         fontSize: 12.0,

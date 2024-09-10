@@ -14,6 +14,7 @@ import 'package:edu_vista/pages/course/top_seller_courses_page.dart';
 import 'package:edu_vista/pages/home/homepage_view.dart';
 import 'package:edu_vista/pages/onboarding/onboarding_page.dart';
 import 'package:edu_vista/pages/onboarding/splash_page.dart';
+import 'package:edu_vista/pages/profile/edit_settings_page.dart';
 import 'package:edu_vista/pages/profile/profile_page.dart';
 import 'package:edu_vista/pages/search/search_page.dart';
 import 'package:edu_vista/services/pref.service.dart';
@@ -111,6 +112,9 @@ class MyApp extends StatelessWidget {
                 builder: (context) => const CheckoutPage());
           case CartPage.id:
             return MaterialPageRoute(builder: (context) => const CartPage());
+          case EditSettings.id:
+            return MaterialPageRoute(
+                builder: (context) => const EditSettings());
           case CourseDetailsPage.id:
             return MaterialPageRoute(
                 builder: (context) => CourseDetailsPage(
