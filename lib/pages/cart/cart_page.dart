@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/blocs/cart/cart_bloc.dart';
+import 'package:edu_vista/models/cart_courses.dart';
 import 'package:edu_vista/widgets/cart/cart_courses_tile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +16,12 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
+  @override
+  void initState() {
+    context.read<CartBloc>().add(GetCartCoursesEvent());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +41,7 @@ Widget _buildCartPage() {
         child: CircularProgressIndicator(),
       );
     } else if (state is CartLoaded) {
-      return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2),
+      return ListView.builder(
           itemCount: state.cartCourses.length,
           physics: const BouncingScrollPhysics(),
           itemBuilder: (context, index) {

@@ -121,50 +121,34 @@ class _EditSettingsState extends State<EditSettings> {
               physics: const NeverScrollableScrollPhysics(),
               children: [
                 Align(
-                  child: GestureDetector(
-                    onTap: () async {
-                      final getImage = await getFile();
-                      if (getImage.path.isNotEmpty) {
-                        _photoUrl = await uploadFile(
-                                getImage.file_name, getImage.path) ??
-                            '';
-                      }
-                      setState(() {});
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
                       if (_photoUrl.isNotEmpty) {
-                        await uploadDataFirestore('users', _uid, {
-                          'photo_url': _photoUrl,
-                        });
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(70),
+                          child: CachedNetworkImage(
+                            imageUrl: _photoUrl,
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                            width: 140,
+                            height: 140,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      } else {
+                        return const SizedBox(
+                          height: 140,
+                          width: 140,
+                          child: Icon(
+                            Icons.account_circle,
+                            size: 140,
+                            color: ColorUtility.gray,
+                          ),
+                        );
                       }
                     },
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        if (_photoUrl.isNotEmpty) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(70),
-                            child: CachedNetworkImage(
-                              imageUrl: _photoUrl,
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                              width: 140,
-                              height: 140,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        } else {
-                          return const SizedBox(
-                            height: 140,
-                            width: 140,
-                            child: Icon(
-                              Icons.account_circle,
-                              size: 140,
-                              color: ColorUtility.gray,
-                            ),
-                          );
-                        }
-                      },
-                    ),
                   ),
                 ),
                 CustomTextFormField(

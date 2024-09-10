@@ -1,6 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:edu_vista/models/cart_courses.dart';
-import 'package:edu_vista/pages/course/course_details_page.dart';
 import 'package:edu_vista/utils/color.utility.dart';
+import 'package:edu_vista/widgets/general/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 
 class CartCoursesTile extends StatelessWidget {
@@ -9,38 +10,32 @@ class CartCoursesTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.sizeOf(context);
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: ColorUtility.gray, width: 0.02),
-      ),
-      height: size.height,
-      width: size.width,
-      child: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, CourseDetailsPage.id,
-                  arguments: cartCourse);
-            },
-            child: SizedBox(
-              width: 160,
-              height: 160,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: ColorUtility.gray, width: 0.02),
+          ),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: CachedNetworkImage(
+                  imageUrl: cartCourse.image ?? '',
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  width: 140,
+                  height: 140,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      cartCourse.image ?? 'No Name',
-                      height: 100,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         cartCourse.rating.toString(),
@@ -83,12 +78,58 @@ class CartCoursesTile extends StatelessWidget {
                         fontSize: 12.0,
                         color: ColorUtility.main),
                   ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 72,
+                        height: 37,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    color: ColorUtility.grayLight),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              backgroundColor: ColorUtility.deepYellow,
+                              foregroundColor: Colors.white,
+                              surfaceTintColor: Colors.white),
+                          onPressed: () {},
+                          child: const Text(
+                            'BuyNow',
+                            style: TextStyle(
+                              fontSize: 7,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 72,
+                        height: 37,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    color: ColorUtility.grayLight),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              backgroundColor: ColorUtility.gray,
+                              foregroundColor: Colors.white,
+                              surfaceTintColor: Colors.white),
+                          onPressed: () {},
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(
+                              fontSize: 8,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
-            ),
-          )
-        ],
-      ),
+            ],
+          )),
     );
   }
 }

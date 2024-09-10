@@ -36,6 +36,7 @@ class _ProfilePicState extends State<ProfilePic> {
     _uid = FirebaseAuth.instance.currentUser!.uid;
     _user = await getInfoFirestore(_uid);
     _photoUrl = _user?.photo_url ?? '';
+    setState(() {});
   }
 
   Future<UserModel> getInfoFirestore(String uid) async {
@@ -95,19 +96,37 @@ class _ProfilePicState extends State<ProfilePic> {
         fit: StackFit.expand,
         clipBehavior: Clip.none,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(70),
-            child: CachedNetworkImage(
-              imageUrl: _photoUrl,
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-              width: 140,
-              height: 140,
-              fit: BoxFit.cover,
-            ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (_photoUrl.isNotEmpty) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(70),
+                  child: CachedNetworkImage(
+                    imageUrl: _photoUrl,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                    width: 140,
+                    height: 140,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              } else {
+                return const SizedBox(
+                  height: 140,
+                  width: 140,
+                  child: Icon(
+                    Icons.account_circle,
+                    size: 140,
+                    color: ColorUtility.gray,
+                  ),
+                );
+              }
+            },
           ),
           Positioned(
-            right: -16,
+            right: -18,
             bottom: 0,
             child: SizedBox(
               height: 46,

@@ -50,10 +50,15 @@ class _HomePageState extends State<HomePage> {
             )
           ],
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Icon(Icons.shopping_cart_outlined),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'cart');
+              },
+              icon: const Icon(Icons.shopping_cart_outlined),
+            ),
           )
         ],
       ),

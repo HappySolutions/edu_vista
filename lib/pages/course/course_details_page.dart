@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/blocs/course/course_bloc.dart';
 import 'package:edu_vista/blocs/lecture/lecture_bloc.dart';
@@ -118,6 +120,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                           height: 5,
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               widget.course.instructor?.name ??
@@ -131,20 +134,30 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                                     FirebaseAuth.instance.currentUser!.uid;
                                 const uuid = Uuid();
                                 final idCourseToCart = uuid.v4();
-                                FirebaseFirestore.instance
-                                    .collection('cart')
-                                    .doc(idCourseToCart)
-                                    .set({
-                                  'id': idCourseToCart,
-                                  'userId': uid,
-                                  'title': widget.course.title,
-                                  'image': widget.course.image,
-                                  'category': widget.course.category,
-                                  'currency': widget.course.currency,
-                                  'instructor': widget.course.instructor?.name,
-                                  'price': widget.course.price,
-                                  'rank': widget.course.rank,
-                                });
+                                try {
+                                  FirebaseFirestore.instance
+                                      .collection('cart')
+                                      .doc(idCourseToCart)
+                                      .set({
+                                    'id': idCourseToCart,
+                                    'user_id': uid,
+                                    'title': widget.course.title,
+                                    'image': widget.course.image,
+                                    'instructor': {
+                                      'name': widget.course.instructor?.name,
+                                      'graduation_from': widget
+                                          .course.instructor?.graduation_from,
+                                      'years_of_experience': widget.course
+                                          .instructor?.years_of_experience,
+                                    },
+                                    'price': widget.course.price,
+                                    'rating': widget.course.rating,
+                                  });
+                                } on FirebaseException catch (e) {
+                                  print(e.message ?? '');
+                                  return;
+                                }
+                                // Navigator.pushNamed(context, 'cart');
                               },
                               child: const Text('Add To Cart'),
                             ),
