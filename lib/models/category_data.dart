@@ -1,7 +1,10 @@
 class CategoryData {
   String? id;
   String? name;
-
+  CategoryData({
+    required this.id,
+    required this.name,
+  });
   CategoryData.fromJson(Map<String, dynamic> data) {
     id = data['id'];
     name = data['name'];

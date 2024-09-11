@@ -1,5 +1,6 @@
 import 'package:edu_vista/pages/categories/categories_page.dart';
 import 'package:edu_vista/pages/chat/chat_page.dart';
+import 'package:edu_vista/pages/course/courses_page.dart';
 import 'package:edu_vista/pages/home/homepage_view.dart';
 import 'package:edu_vista/pages/profile/profile_page.dart';
 import 'package:edu_vista/pages/search/search_page.dart';
@@ -20,7 +21,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<Widget> _screens = [
     const HomePageView(),
-    const CategoriesPage(),
+    const CoursesPage(),
     const SearchPage(),
     const ChatPage(),
     const ProfilePage(),
@@ -83,22 +84,26 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w700,
-              overflow: TextOverflow.ellipsis,
             ),
           ),
-          Text(
-            (PreferencesService.authAction == 'signup') ? '' : 'Back! ',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
+          Flexible(
+            child: Text(
+              (PreferencesService.authAction == 'signup') ? '' : 'Back! ',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
-          Text(
-            '${FirebaseAuth.instance.currentUser?.displayName}',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              color: ColorUtility.main,
+          Flexible(
+            child: Text(
+              FirebaseAuth.instance.currentUser?.displayName ?? 'User',
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: ColorUtility.main,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
         ],

@@ -30,5 +30,3 @@ class _CategoryCoursesPageState extends State<CategoryCoursesPage> {
     );
   }
 }
-
-//Navigator.pushNamed(context, CourseDetailsPage.id, arguments: courses[index]);

@@ -13,8 +13,27 @@ class CategoriesPage extends StatefulWidget {
 class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: ExpandedCategoryMenu(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Center(
+          child: Text('Categories'),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, 'cart');
+              },
+              icon: const Icon(Icons.shopping_cart_outlined),
+            ),
+          ),
+        ],
+      ),
+      body: const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: ExpandedCategoryMenu(),
+      ),
     );
   }
 }
