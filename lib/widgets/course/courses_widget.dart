@@ -43,6 +43,7 @@ class _CoursesWidgetState extends State<CoursesWidget> {
                 .map((e) => Course.fromJson({'id': e.id, ...e.data()}))
                 .toList() ??
             []);
+        var limitedCourses = courses.take(2).toList();
 
         return GridView.count(
           mainAxisSpacing: 15,
@@ -50,7 +51,7 @@ class _CoursesWidgetState extends State<CoursesWidget> {
           shrinkWrap: true,
           crossAxisCount: 2,
           childAspectRatio: 0.8,
-          children: List.generate(courses.length, (index) {
+          children: List.generate(limitedCourses.length, (index) {
             return InkWell(
               onTap: () {
                 Navigator.pushNamed(context, CourseDetailsPage.id,

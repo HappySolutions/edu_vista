@@ -16,6 +16,7 @@ class ExpandedCategoryMenu extends StatefulWidget {
 
 class _ExpandedCategoryMenuState extends State<ExpandedCategoryMenu> {
   var futureCall = FirebaseFirestore.instance.collection('categories').get();
+  List<bool> _isExpandedList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -34,64 +35,87 @@ class _ExpandedCategoryMenuState extends State<ExpandedCategoryMenu> {
                   .map((e) => CategoryData.fromJson({'id': e.id, ...e.data()}))
                   .toList() ??
               []);
+
+          // Initialize the expansion state list
+          if (_isExpandedList.length != categories.length) {
+            _isExpandedList = List<bool>.filled(categories.length, false);
+          }
+
           return ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemCount: categories.length,
-            itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: ExpansionTile(
-                title: Text(
-                  categories[index].name ?? 'No Name',
-                  style: const TextStyle(
-                    color: ColorUtility.mediumlBlack,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: ExpansionTile(
+                  showTrailingIcon: false,
+                  title: Container(
+                    decoration: BoxDecoration(
+                      border: _isExpandedList[index]
+                          ? Border.all(
+                              color: ColorUtility.deepYellow,
+                              width: 2.0,
+                            )
+                          : null,
+                      borderRadius: BorderRadius.circular(6),
+                      color: _isExpandedList[index]
+                          ? Colors.transparent
+                          : ColorUtility.grayExtraLight,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          categories[index].name ?? 'No Name',
+                          style: TextStyle(
+                            color: _isExpandedList[index]
+                                ? ColorUtility.deepYellow
+                                : ColorUtility.mediumlBlack,
+                          ),
+                        ),
+                        Icon(
+                          _isExpandedList[index]
+                              ? Icons.keyboard_arrow_down
+                              : Icons.double_arrow,
+                          color: _isExpandedList[index]
+                              ? ColorUtility.deepYellow
+                              : ColorUtility.mediumlBlack,
+                        ),
+                      ],
+                    ),
                   ),
+                  iconColor: ColorUtility.deepYellow,
+                  maintainState: true,
+                  collapsedBackgroundColor: Colors.transparent,
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  collapsedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    side: BorderSide.none,
+                  ),
+                  onExpansionChanged: (isExpanded) {
+                    setState(() {
+                      _isExpandedList[index] = isExpanded;
+                    });
+                  },
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 5.0),
+                      child: CoursesByCategoryWidget(
+                        categoryData: categories[index],
+                      ),
+                    ),
+                  ],
                 ),
-                trailing: const Icon(
-                  Icons.double_arrow,
-                ),
-                iconColor: ColorUtility.deepYellow,
-                maintainState: true,
-                collapsedBackgroundColor: ColorUtility.grayExtraLight,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6)),
-                backgroundColor: ColorUtility.grayExtraLight,
-                collapsedShape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(6))),
-                children: [
-                  CoursesByCategoryWidget(
-                    categoryData: categories[index],
-                  )
-                ],
-              ),
-              // TextButton(
-              //   style: TextButton.styleFrom(
-              //     foregroundColor: ColorUtility.deepYellow,
-              //     padding: const EdgeInsets.all(20),
-              //     shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(6)),
-              //     backgroundColor: ColorUtility.grayExtraLight,
-              //   ),
-              //   onPressed: widget.press,
-              //   child:
-              //        Row(
-              //     children: [
-              //       Expanded(
-              //         child: Text(
-              //           categories[index].name ?? 'No Name',
-              //           style: const TextStyle(
-              //             color: ColorUtility.mediumlBlack,
-              //           ),
-              //         ),
-              //       ),
-              //       const Icon(
-              //         Icons.double_arrow,
-              //         color: ColorUtility.mediumlBlack,
-              //       ),
-              //     ],
-              //   ),
-              // ),
-            ),
+              );
+            },
           );
         });
   }

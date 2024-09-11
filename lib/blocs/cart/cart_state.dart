@@ -12,7 +12,17 @@ class CartLoaded extends CartState {
   CartLoaded({required this.cartCourses});
 }
 
+class CartEmpty extends CartState {
+  final String message;
+  CartEmpty({required this.message});
+}
+
 class CartError extends CartState {
   final String message;
   CartError({required this.message});
+}
+
+class CartCourseDeleted extends CartState {
+  final CartCourses cartCourse;
+  CartCourseDeleted(this.cartCourse);
 }

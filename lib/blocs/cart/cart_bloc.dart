@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/models/cart_courses.dart';
@@ -11,12 +12,30 @@ part 'cart_state.dart';
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc() : super(CartInitial()) {
-    on<GetCartCoursesEvent>((event, emit) async {
-      List<CartCourses> cartCourses = [];
-      emit(CartLoading());
-      cartCourses = await getCartCourses(cartCourses);
-      emit(CartLoaded(cartCourses: cartCourses));
+    on<CartEventInitial>((event, emit) {
+      emit(CartInitial());
     });
+
+    on<GetCartCoursesEvent>(_onGetCartCourses);
+    on<DeleteCartCourseEvent>(_onDeleteCartCourse);
+  }
+  CartCourses? cartCourse;
+  FutureOr<void> _onDeleteCartCourse(
+      DeleteCartCourseEvent event, Emitter<CartState> emit) async {
+    cartCourse = event.cartCourse;
+    await deleteCartCourse(cartCourse!);
+  }
+
+  FutureOr<void> _onGetCartCourses(
+      GetCartCoursesEvent event, Emitter<CartState> emit) async {
+    List<CartCourses> cartCourses = [];
+    emit(CartLoading());
+    cartCourses = await getCartCourses(cartCourses);
+    if (cartCourses.isEmpty) {
+      emit(CartEmpty(message: 'Please Add Courses To the cart'));
+    } else {
+      emit(CartLoaded(cartCourses: cartCourses));
+    }
   }
 
   Future<List<CartCourses>> getCartCourses(
@@ -42,4 +61,11 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
     return cartCourses;
   }
+}
+
+Future<void> deleteCartCourse(CartCourses cartCourse) async {
+  await FirebaseFirestore.instance
+      .collection('cart')
+      .doc(cartCourse.id)
+      .delete();
 }

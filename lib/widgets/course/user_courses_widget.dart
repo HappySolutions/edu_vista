@@ -6,24 +6,23 @@ import 'package:edu_vista/pages/course/course_details_page.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:flutter/material.dart';
 
-class CoursesByCategoryWidget extends StatefulWidget {
+class UserCoursesWidget extends StatefulWidget {
   final CategoryData categoryData;
 
-  const CoursesByCategoryWidget({required this.categoryData, super.key});
+  const UserCoursesWidget({required this.categoryData, super.key});
 
   @override
-  State<CoursesByCategoryWidget> createState() =>
-      _CoursesByCategoryWidgetState();
+  State<UserCoursesWidget> createState() =>
+      _UserCoursesWidgetState();
 }
 
-class _CoursesByCategoryWidgetState extends State<CoursesByCategoryWidget> {
+class _UserCoursesWidgetState extends State<UserCoursesWidget> {
   late Future<QuerySnapshot<Map<String, dynamic>>> futureCall;
 
   @override
   void initState() {
     futureCall = FirebaseFirestore.instance
         .collection('courses')
-        .where('category.id', isEqualTo: widget.categoryData.id)
         .orderBy('created_date', descending: true)
         .get();
     super.initState();
@@ -46,7 +45,6 @@ class _CoursesByCategoryWidgetState extends State<CoursesByCategoryWidget> {
                 .map((e) => Course.fromJson({'id': e.id, ...e.data()}))
                 .toList() ??
             []);
-        var limitedCourses = courses.take(2).toList();
 
         return GridView.count(
           semanticChildCount: 2,
@@ -55,7 +53,7 @@ class _CoursesByCategoryWidgetState extends State<CoursesByCategoryWidget> {
           shrinkWrap: true,
           crossAxisCount: 2,
           childAspectRatio: 0.7,
-          children: List.generate(limitedCourses.length, (index) {
+          children: List.generate(courses.length, (index) {
             return InkWell(
               onTap: () {
                 Navigator.pushNamed(context, CourseDetailsPage.id,

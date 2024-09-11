@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:edu_vista/blocs/cart/cart_bloc.dart';
 import 'package:edu_vista/models/cart_courses.dart';
 import 'package:edu_vista/utils/color.utility.dart';
-import 'package:edu_vista/widgets/general/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CartCoursesTile extends StatelessWidget {
   final CartCourses cartCourse;
@@ -32,7 +33,7 @@ class CartCoursesTile extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -81,19 +82,23 @@ class CartCoursesTile extends StatelessWidget {
                   Row(
                     children: [
                       SizedBox(
-                        width: 72,
+                        width: 75,
                         height: 37,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 side: const BorderSide(
                                     color: ColorUtility.grayLight),
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(5.0),
                               ),
                               backgroundColor: ColorUtility.deepYellow,
                               foregroundColor: Colors.white,
                               surfaceTintColor: Colors.white),
-                          onPressed: () {},
+                          onPressed: () {
+                            context
+                                .read<CartBloc>()
+                                .add(DeleteCartCourseEvent(cartCourse));
+                          },
                           child: const Text(
                             'BuyNow',
                             style: TextStyle(
@@ -103,7 +108,7 @@ class CartCoursesTile extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        width: 72,
+                        width: 75,
                         height: 37,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -115,7 +120,32 @@ class CartCoursesTile extends StatelessWidget {
                               backgroundColor: ColorUtility.gray,
                               foregroundColor: Colors.white,
                               surfaceTintColor: Colors.white),
-                          onPressed: () {},
+                          onPressed: () async {
+                            bool? confirmed = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Delete Course from Cart'),
+                                  content: const Text(
+                                      'Are you sure you want to delete this Course?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(false),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(true),
+                                      child: const Text('Delete'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+
+                            if (confirmed == true) {}
+                          },
                           child: const Text(
                             'Cancel',
                             style: TextStyle(

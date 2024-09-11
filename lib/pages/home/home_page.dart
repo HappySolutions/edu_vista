@@ -31,25 +31,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            const Text(
-              'Welcome ',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-            ),
-            Text(
-              (PreferencesService.authAction == 'signup') ? '' : 'Back! ',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-            ),
-            Text(
-              '${FirebaseAuth.instance.currentUser?.displayName}',
-              style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: ColorUtility.main),
-            )
-          ],
-        ),
+        title: _buildAppBarTitle(),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -59,7 +41,7 @@ class _HomePageState extends State<HomePage> {
               },
               icon: const Icon(Icons.shopping_cart_outlined),
             ),
-          )
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavBar(
@@ -90,5 +72,45 @@ class _HomePageState extends State<HomePage> {
         children: _screens,
       ),
     );
+  }
+
+  Widget _buildAppBarTitle() {
+    if (_selectedIndex == 0) {
+      return Row(
+        children: [
+          const Text(
+            'Welcome ',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Text(
+            (PreferencesService.authAction == 'signup') ? '' : 'Back! ',
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            '${FirebaseAuth.instance.currentUser?.displayName}',
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: ColorUtility.main,
+            ),
+          ),
+        ],
+      );
+    } else if (_selectedIndex == 1) {
+      return const Center(child: Text('Courses'));
+    } else if (_selectedIndex == 2) {
+      return const Center(child: Text('Search'));
+    } else if (_selectedIndex == 3) {
+      return const Center(child: Text('Chat'));
+    } else {
+      return const Center(child: Text('Profile'));
+    }
   }
 }

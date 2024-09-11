@@ -98,7 +98,7 @@ class _ProfilePicState extends State<ProfilePic> {
         children: [
           LayoutBuilder(
             builder: (context, constraints) {
-              if (_photoUrl.isNotEmpty) {
+              if (Uri.parse(_photoUrl).hasAbsolutePath) {
                 return ClipRRect(
                   borderRadius: BorderRadius.circular(70),
                   child: CachedNetworkImage(

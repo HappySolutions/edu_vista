@@ -5,8 +5,7 @@ import 'package:edu_vista/blocs/course/course_bloc.dart';
 import 'package:edu_vista/blocs/lecture/lecture_bloc.dart';
 import 'package:edu_vista/models/course.dart';
 import 'package:edu_vista/utils/color.utility.dart';
-import 'package:edu_vista/widgets/course/course_options_widgets.dart';
-import 'package:edu_vista/widgets/lecture/lecture_chips.dart';
+import 'package:edu_vista/widgets/course/course_details_body_widget.dart';
 import 'package:edu_vista/widgets/lecture/video_box.widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +22,27 @@ class CourseDetailsPage extends StatefulWidget {
 }
 
 class _CourseDetailsPageState extends State<CourseDetailsPage> {
+  final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
+  static const uuid = Uuid();
+
+  String? _userId;
+
   @override
   void initState() {
     context.read<CourseBloc>().add(CourseFetchEvent(widget.course));
     context.read<LectureBloc>().add(LectureEventInitial());
     super.initState();
+    _getCurrentUser();
+  }
+
+  Future<void> _getCurrentUser() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      setState(() {
+        _userId = user.uid;
+      });
+    }
   }
 
   bool applyChanges = false;
@@ -130,17 +145,14 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                             ),
                             ElevatedButton(
                               onPressed: () async {
-                                String uid =
-                                    FirebaseAuth.instance.currentUser!.uid;
-                                const uuid = Uuid();
                                 final idCourseToCart = uuid.v4();
                                 try {
-                                  FirebaseFirestore.instance
+                                  _firestore
                                       .collection('cart')
                                       .doc(idCourseToCart)
                                       .set({
                                     'id': idCourseToCart,
-                                    'user_id': uid,
+                                    'user_id': _userId,
                                     'title': widget.course.title,
                                     'image': widget.course.image,
                                     'instructor': {
@@ -157,7 +169,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                                   print(e.message ?? '');
                                   return;
                                 }
-                                // Navigator.pushNamed(context, 'cart');
+                                Navigator.pushNamed(context, 'cart');
                               },
                               child: const Text('Add To Cart'),
                             ),
@@ -166,7 +178,9 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                         const SizedBox(
                           height: 10,
                         ),
-                        const _BodyWidget()
+                        CourseDetailsBodyWidget(
+                          course: widget.course,
+                        ),
                       ],
                     ),
                   ),
@@ -187,67 +201,5 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
         ],
       ),
     ));
-  }
-}
-
-class _BodyWidget extends StatefulWidget {
-  const _BodyWidget({super.key});
-
-  @override
-  State<_BodyWidget> createState() => __BodyWidgetState();
-}
-
-class __BodyWidgetState extends State<_BodyWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: BlocBuilder<CourseBloc, CourseState>(builder: (ctx, state) {
-        return Column(
-          children: [
-            LectureChipsWidget(
-              selectedOption: (state is CourseOptionStateChanges)
-                  ? state.courseOption
-                  : null,
-              onChanged: (courseOption) {
-                context
-                    .read<CourseBloc>()
-                    .add(CourseOptionChosenEvent(courseOption));
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-                child: (state is CourseOptionStateChanges)
-                    ? CourseOptionsWidgets(
-                        course: context.read<CourseBloc>().course!,
-                        courseOption: state.courseOption,
-                        onLectureChosen: (lecture) async {
-                          try {
-                            FirebaseFirestore.instance
-                                .collection('course_user_progress')
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .update({
-                              context.read<CourseBloc>().course!.id!:
-                                  FieldValue.increment(1)
-                            });
-                          } catch (e) {
-                            FirebaseFirestore.instance
-                                .collection('course_user_progress')
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .set({
-                              context.read<CourseBloc>().course!.id!: 1
-                            });
-                          }
-                          context
-                              .read<LectureBloc>()
-                              .add(LectureChosenEvent(lecture));
-                        },
-                      )
-                    : const SizedBox.shrink())
-          ],
-        );
-      }),
-    );
   }
 }
