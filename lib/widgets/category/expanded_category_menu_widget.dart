@@ -121,7 +121,7 @@ class _ExpandedCategoryMenuState extends State<ExpandedCategoryMenu> {
                           ),
                         ),
                         CoursesByCategoryWidget(
-                          categoryData: categories[index],
+                          categoryDataId: categories[index].id,
                         ),
                       ],
                     ),

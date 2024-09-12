@@ -1,6 +1,5 @@
 import 'package:edu_vista/pages/categories/categories_page.dart';
-import 'package:edu_vista/pages/course/top_rated_courses_page.dart';
-import 'package:edu_vista/pages/course/top_seller_courses_page.dart';
+import 'package:edu_vista/pages/course/courses_page.dart';
 import 'package:edu_vista/widgets/category/categories_widget.dart';
 import 'package:edu_vista/widgets/course/courses_widget.dart';
 import 'package:edu_vista/widgets/general/label_widget.dart';
@@ -34,10 +33,17 @@ class _HomePageViewState extends State<HomePageView> {
                 height: 20,
               ),
               LabelWidget(
-                name: 'Top Rated Courses',
-                onSeeAllClicked: () =>
-                    Navigator.pushNamed(context, TopRatedCoursesPage.id),
-              ),
+                  name: 'Top Rated Courses',
+                  onSeeAllClicked: () {
+                    Navigator.pushNamed(
+                      context,
+                      CoursesPage.id,
+                      arguments: <String, dynamic>{
+                        'query': 'top rated',
+                        'showAppbar': true,
+                      },
+                    );
+                  }),
               const CoursesWidget(
                 rankValue: 'top rated',
               ),
@@ -45,10 +51,17 @@ class _HomePageViewState extends State<HomePageView> {
                 height: 20,
               ),
               LabelWidget(
-                name: 'Top Seller Courses',
-                onSeeAllClicked: () =>
-                    Navigator.pushNamed(context, TopSellerCoursesPage.id),
-              ),
+                  name: 'Top Seller Courses',
+                  onSeeAllClicked: () {
+                    Navigator.pushNamed(
+                      context,
+                      CoursesPage.id,
+                      arguments: <String, dynamic>{
+                        'query': 'top seller',
+                        'showAppbar': true,
+                      },
+                    );
+                  }),
               const CoursesWidget(
                 rankValue: 'top seller',
               ),
@@ -59,3 +72,80 @@ class _HomePageViewState extends State<HomePageView> {
     );
   }
 }
+
+// import 'package:edu_vista/pages/categories/categories_page.dart';
+// import 'package:edu_vista/pages/course/courses_page.dart';
+// import 'package:edu_vista/widgets/category/categories_widget.dart';
+// import 'package:edu_vista/widgets/course/courses_widget.dart';
+// import 'package:edu_vista/widgets/general/label_widget.dart';
+// import 'package:flutter/material.dart';
+
+// class HomePageView extends StatefulWidget {
+//   static const String id = 'homepage';
+
+//   const HomePageView({super.key});
+
+//   @override
+//   State<HomePageView> createState() => _HomePageViewState();
+// }
+
+// class _HomePageViewState extends State<HomePageView> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       child: Padding(
+//         padding: const EdgeInsets.all(10.0),
+//         child: SingleChildScrollView(
+//           child: Column(
+//             children: [
+//               LabelWidget(
+//                 name: 'Categories',
+//                 onSeeAllClicked: () =>
+//                     Navigator.pushNamed(context, CategoriesPage.id),
+//               ),
+//               const CategoriesWidget(),
+//               const SizedBox(
+//                 height: 20,
+//               ),
+//               LabelWidget(
+//                   name: 'Top Rated Courses',
+//                   onSeeAllClicked: () {
+//                     String query = 'top rated';
+//                     Navigator.pushNamed(
+//                       context,
+//                       CoursesPage.id,
+//                       arguments: <String, dynamic>{
+//                         'query': query,
+//                         'showAppbar': true,
+//                       },
+//                     );
+//                   }),
+//               const CoursesWidget(
+//                 rankValue: 'top rated',
+//               ),
+//               const SizedBox(
+//                 height: 20,
+//               ),
+//               LabelWidget(
+//                   name: 'Top Seller Courses',
+//                   onSeeAllClicked: () {
+//                     String query = 'top seller';
+//                     Navigator.pushNamed(
+//                       context,
+//                       CoursesPage.id,
+//                       arguments: <String, dynamic>{
+//                         'query': query,
+//                         'showAppbar': true,
+//                       },
+//                     );
+//                   }),
+//               const CoursesWidget(
+//                 rankValue: 'top seller',
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

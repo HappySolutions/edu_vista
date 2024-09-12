@@ -144,7 +144,11 @@ class CartCoursesTile extends StatelessWidget {
                               },
                             );
 
-                            if (confirmed == true) {}
+                            if (confirmed == true) {
+                              context
+                                  .read<CartBloc>()
+                                  .add(DeleteCartCourseEvent(cartCourse));
+                            }
                           },
                           child: const Text(
                             'Cancel',

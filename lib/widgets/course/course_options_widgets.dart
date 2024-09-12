@@ -24,6 +24,9 @@ class CourseOptionsWidgets extends StatefulWidget {
 
 class _CourseOptionsWidgetsState extends State<CourseOptionsWidgets> {
   late Future<QuerySnapshot<Map<String, dynamic>>> futureCall;
+  Map<String, bool> _expandedSections = {}; // Track expansion state
+  List<Lecture>? lectures;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -31,8 +34,6 @@ class _CourseOptionsWidgetsState extends State<CourseOptionsWidgets> {
     super.initState();
   }
 
-  List<Lecture>? lectures;
-  bool isLoading = false;
   void init() async {
     setState(() {
       isLoading = true;
@@ -105,14 +106,89 @@ class _CourseOptionsWidgetsState extends State<CourseOptionsWidgets> {
         return const SizedBox.shrink();
 
       case CourseOptions.More:
-        return const SizedBox.shrink();
+        return Column(children: [
+          _buildMoreSection('About Instructor'),
+          _buildMoreSection('Course Resources'),
+          _buildMoreSection('Share this Course'),
+        ]);
+
       default:
         return Text('Invalid option ${widget.courseOption.name}');
     }
   }
+
+  Widget _buildMoreSection(String title) {
+    bool isExpanded = _expandedSections[title] ?? false;
+
+    return ExpansionTile(
+      showTrailingIcon: false,
+      title: Container(
+        decoration: BoxDecoration(
+          border: isExpanded
+              ? Border.all(
+                  color: ColorUtility.deepYellow,
+                  width: 2.0,
+                )
+              : null,
+          borderRadius: BorderRadius.circular(6),
+          color: isExpanded ? Colors.transparent : ColorUtility.grayExtraLight,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                color: isExpanded
+                    ? ColorUtility.deepYellow
+                    : ColorUtility.mediumlBlack,
+              ),
+            ),
+            Icon(
+              isExpanded ? Icons.keyboard_arrow_down : Icons.double_arrow,
+              color: isExpanded
+                  ? ColorUtility.deepYellow
+                  : ColorUtility.mediumlBlack,
+            ),
+          ],
+        ),
+      ),
+      iconColor: ColorUtility.deepYellow,
+      maintainState: true,
+      collapsedBackgroundColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+      ),
+      collapsedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+        side: BorderSide.none,
+      ),
+      onExpansionChanged: (expanded) {
+        setState(() {
+          _expandedSections[title] = expanded;
+        });
+      },
+      children: const [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                'See All',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-//TODO check this func
+//TODO activate this func
 void launchURL() async {
   const url = 'https:website.com';
   if (await canLaunchUrl(url as Uri)) {

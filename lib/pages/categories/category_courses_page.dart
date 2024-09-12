@@ -23,7 +23,7 @@ class _CategoryCoursesPageState extends State<CategoryCoursesPage> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: CoursesByCategoryWidget(
-            categoryData: widget.categoryData,
+            categoryDataId: widget.categoryData.id,
           ),
         ),
       ),

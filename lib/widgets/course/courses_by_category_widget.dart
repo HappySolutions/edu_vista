@@ -8,9 +8,9 @@ import 'package:edu_vista/utils/color.utility.dart';
 import 'package:flutter/material.dart';
 
 class CoursesByCategoryWidget extends StatefulWidget {
-  final CategoryData categoryData;
+  final String? categoryDataId;
 
-  const CoursesByCategoryWidget({required this.categoryData, super.key});
+  const CoursesByCategoryWidget({required this.categoryDataId, super.key});
 
   @override
   State<CoursesByCategoryWidget> createState() =>
@@ -24,7 +24,7 @@ class _CoursesByCategoryWidgetState extends State<CoursesByCategoryWidget> {
   void initState() {
     futureCall = FirebaseFirestore.instance
         .collection('courses')
-        .where('category.id', isEqualTo: widget.categoryData.id)
+        .where('category.id', isEqualTo: widget.categoryDataId)
         .orderBy('created_date', descending: true)
         .get();
     super.initState();

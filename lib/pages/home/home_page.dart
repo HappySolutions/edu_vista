@@ -21,7 +21,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<Widget> _screens = [
     const HomePageView(),
-    const CoursesPage(),
+    const CoursesPage(
+      showAppbar: false,
+      query: '',
+    ),
     const SearchPage(),
     const ChatPage(),
     const ProfilePage(),

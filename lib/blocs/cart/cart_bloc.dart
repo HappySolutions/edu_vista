@@ -19,18 +19,26 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     on<GetCartCoursesEvent>(_onGetCartCourses);
     on<DeleteCartCourseEvent>(_onDeleteCartCourse);
   }
-  CartCourses? cartCourse;
+
   FutureOr<void> _onDeleteCartCourse(
       DeleteCartCourseEvent event, Emitter<CartState> emit) async {
-    cartCourse = event.cartCourse;
-    await deleteCartCourse(cartCourse!);
+    try {
+      await deleteCartCourse(event.cartCourse);
+      List<CartCourses> updatedCartCourses = await getCartCourses([]);
+      if (updatedCartCourses.isEmpty) {
+        emit(CartEmpty(message: 'Please Add Courses To the cart'));
+      } else {
+        emit(CartLoaded(cartCourses: updatedCartCourses));
+      }
+    } catch (e) {
+      emit(CartError(message: 'Error deleting the course: $e'));
+    }
   }
 
   FutureOr<void> _onGetCartCourses(
       GetCartCoursesEvent event, Emitter<CartState> emit) async {
-    List<CartCourses> cartCourses = [];
     emit(CartLoading());
-    cartCourses = await getCartCourses(cartCourses);
+    List<CartCourses> cartCourses = await getCartCourses([]);
     if (cartCourses.isEmpty) {
       emit(CartEmpty(message: 'Please Add Courses To the cart'));
     } else {
@@ -42,22 +50,18 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       List<CartCourses> cartCourses) async {
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-      List<DocumentSnapshot> result = [];
-      QuerySnapshot? responce;
       String uid = FirebaseAuth.instance.currentUser!.uid;
-      responce = await firestore
+      QuerySnapshot responce = await firestore
           .collection('cart')
-          .orderBy('user_id', descending: true)
-          .where('user_id', isGreaterThanOrEqualTo: uid)
+          .where('user_id', isEqualTo: uid)
           .get();
-      result = responce.docs;
+      List<DocumentSnapshot> result = responce.docs;
       cartCourses = List<CartCourses>.from(
-        result.map(
-          (item) => CartCourses.fromJson(item.data() as Map<String, dynamic>),
-        ),
+        result.map((item) =>
+            CartCourses.fromJson(item.data() as Map<String, dynamic>)),
       );
     } catch (e) {
-      print('>>>>>>>>Error $e');
+      print('Error: $e');
     }
     return cartCourses;
   }
