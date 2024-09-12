@@ -97,12 +97,12 @@ class CartCoursesTile extends StatelessWidget {
                           onPressed: () {
                             context
                                 .read<CartBloc>()
-                                .add(DeleteCartCourseEvent(cartCourse));
+                                .add(BuyCourseEvent(cartCourse));
                           },
                           child: const Text(
-                            'BuyNow',
+                            'Buy',
                             style: TextStyle(
-                              fontSize: 7,
+                              fontSize: 12,
                             ),
                           ),
                         ),

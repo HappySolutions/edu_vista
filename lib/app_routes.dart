@@ -42,7 +42,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case SearchPage.id:
       return MaterialPageRoute(builder: (context) => const SearchPage());
     case CheckoutPage.id:
-      return MaterialPageRoute(builder: (context) => const CheckoutPage());
+      return MaterialPageRoute(
+          builder: (context) => CheckoutPage(
+                totalPrice: data,
+              ));
     case CartPage.id:
       return MaterialPageRoute(builder: (context) => const CartPage());
     case EditSettings.id:
