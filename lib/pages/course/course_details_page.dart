@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/blocs/course/course_bloc.dart';
@@ -143,33 +143,94 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                               style: const TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
-                            ElevatedButton(
+                            TextButton(
+                              // onPressed: () async {
+                              //   final idCourseToCart = uuid.v4();
+                              //   try {
+                              //     _firestore
+                              //         .collection('cart')
+                              //         .doc(idCourseToCart)
+                              //         .set({
+                              //       'id': idCourseToCart,
+                              //       'user_id': _userId,
+                              //       'title': widget.course.title,
+                              //       'image': widget.course.image,
+                              //       'instructor': {
+                              //         'name': widget.course.instructor?.name,
+                              //         'graduation_from': widget
+                              //             .course.instructor?.graduation_from,
+                              //         'years_of_experience': widget.course
+                              //             .instructor?.years_of_experience,
+                              //       },
+                              //       'price': widget.course.price,
+                              //       'rating': widget.course.rating,
+                              //     });
+                              //   } on FirebaseException catch (e) {
+                              //     print(e.message ?? '');
+                              //     return;
+                              //   }
+                              //   Navigator.pushNamed(context, 'cart');
+                              // },
                               onPressed: () async {
-                                final idCourseToCart = uuid.v4();
-                                try {
-                                  _firestore
-                                      .collection('cart')
-                                      .doc(idCourseToCart)
-                                      .set({
-                                    'id': idCourseToCart,
-                                    'user_id': _userId,
-                                    'title': widget.course.title,
-                                    'image': widget.course.image,
-                                    'instructor': {
-                                      'name': widget.course.instructor?.name,
-                                      'graduation_from': widget
-                                          .course.instructor?.graduation_from,
-                                      'years_of_experience': widget.course
-                                          .instructor?.years_of_experience,
-                                    },
-                                    'price': widget.course.price,
-                                    'rating': widget.course.rating,
-                                  });
-                                } on FirebaseException catch (e) {
-                                  print(e.message ?? '');
-                                  return;
+                                final cartCollection =
+                                    _firestore.collection('cart');
+                                final cartQuery = await cartCollection
+                                    .where('user_id', isEqualTo: _userId)
+                                    .where('title',
+                                        isEqualTo: widget.course.title)
+                                    .get();
+
+                                if (cartQuery.docs.isNotEmpty) {
+                                  // Course is already in the cart
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Course already added to cart.'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                } else {
+                                  // Course is not in the cart, proceed to add it
+                                  final idCourseToCart = uuid.v4();
+                                  try {
+                                    await cartCollection
+                                        .doc(idCourseToCart)
+                                        .set({
+                                      'id': idCourseToCart,
+                                      'user_id': _userId,
+                                      'title': widget.course.title,
+                                      'image': widget.course.image,
+                                      'instructor': {
+                                        'name': widget.course.instructor?.name,
+                                        'graduation_from': widget
+                                            .course.instructor?.graduation_from,
+                                        'years_of_experience': widget.course
+                                            .instructor?.years_of_experience,
+                                      },
+                                      'price': widget.course.price,
+                                      'rating': widget.course.rating,
+                                    });
+
+                                    // Notify user and navigate to cart
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Course added to cart successfully!'),
+                                        backgroundColor: Colors.green,
+                                      ),
+                                    );
+                                    Navigator.pushNamed(context, 'cart');
+                                  } on FirebaseException catch (e) {
+                                    print(e.message ?? '');
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Failed to add course to cart.'),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                  }
                                 }
-                                Navigator.pushNamed(context, 'cart');
                               },
                               child: const Text('Add To Cart'),
                             ),
