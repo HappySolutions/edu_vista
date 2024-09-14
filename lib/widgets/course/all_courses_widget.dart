@@ -124,16 +124,6 @@ class _AllCoursesWidgetState extends State<AllCoursesWidget> {
                                 fit: BoxFit.cover,
                               )
                             : const CircularProgressIndicator(),
-                        // CachedNetworkImage(
-                        //   imageUrl: courses[index].image ?? '',
-                        //   placeholder: (context, url) =>
-                        //       const CircularProgressIndicator(),
-                        //   errorWidget: (context, url, error) =>
-                        //       const Icon(Icons.error),
-                        //   width: 140,
-                        //   height: 140,
-                        //   fit: BoxFit.cover,
-                        // ),
                       ),
                       const SizedBox(width: 10),
                       Column(

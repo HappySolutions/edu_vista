@@ -1,7 +1,4 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
-
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/models/user_model.dart';
@@ -89,12 +86,12 @@ class _EditSettingsState extends State<EditSettings> {
         .update(dataNeedUpdate)
         .then((value) {
       const snackBar = SnackBar(
-        content: Text('Updated Successfuly'),
+        content: Text('Updated Successfully'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }).catchError((e) {
       const snackBar = SnackBar(
-        content: Text('Error Happend'),
+        content: Text('Error Occurred'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
@@ -105,7 +102,6 @@ class _EditSettingsState extends State<EditSettings> {
     _nameController.dispose();
     _emailController.dispose();
     _phoneNumController.dispose();
-
     super.dispose();
   }
 
@@ -115,71 +111,92 @@ class _EditSettingsState extends State<EditSettings> {
       appBar: AppBar(
         title: const Text('Edit Settings'),
       ),
+      resizeToAvoidBottomInset:
+          true, // This allows the body to resize when the keyboard appears
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                Align(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      if (_photoUrl.isNotEmpty) {
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(70),
-                          child: CachedNetworkImage(
-                            imageUrl: _photoUrl,
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                            width: 140,
-                            height: 140,
-                            fit: BoxFit.cover,
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Align(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          if (_photoUrl.isNotEmpty) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(70),
+                              child: CachedNetworkImage(
+                                imageUrl: _photoUrl,
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                                width: 140,
+                                height: 140,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          } else {
+                            return const SizedBox(
+                              height: 140,
+                              width: 140,
+                              child: Icon(
+                                Icons.account_circle,
+                                size: 140,
+                                color: ColorUtility.gray,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    CustomTextFormField(
+                      hintText: 'Full Name',
+                      labelText: 'Name',
+                      controller: _nameController,
+                    ),
+                    const SizedBox(height: 20),
+                    CustomTextFormField(
+                      hintText: 'Email',
+                      labelText: 'Email',
+                      controller: _emailController,
+                    ),
+                    const SizedBox(height: 20),
+                    CustomTextFormField(
+                      hintText: 'Phone Number',
+                      labelText: 'Phone',
+                      controller: _phoneNumController,
+                    ),
+                    const SizedBox(height: 40),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomElevatedButton(
+                            onPressed: () {
+                              uploadDataFirestore('users', _uid, {
+                                'name': _nameController.text,
+                                'email': _emailController.text,
+                                'phone_number': _phoneNumController.text
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Profile Updated Successfuly',
+                                      style: TextStyle(color: Colors.white)),
+                                  backgroundColor: ColorUtility.deepYellow,
+                                ),
+                              );
+                              Navigator.pop(context, true);
+                            },
+                            child: const Text('Save'),
                           ),
-                        );
-                      } else {
-                        return const SizedBox(
-                          height: 140,
-                          width: 140,
-                          child: Icon(
-                            Icons.account_circle,
-                            size: 140,
-                            color: ColorUtility.gray,
-                          ),
-                        );
-                      }
-                    },
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                CustomTextFormField(
-                  hintText: 'Full Name',
-                  labelText: 'Name',
-                  controller: _nameController,
-                ),
-                CustomTextFormField(
-                  hintText: 'Email',
-                  labelText: 'Email',
-                  controller: _emailController,
-                ),
-                CustomTextFormField(
-                  hintText: 'Phone Number',
-                  labelText: 'Phone',
-                  controller: _phoneNumController,
-                ),
-                const SizedBox(
-                  height: 40,
-                ),
-                CustomElevatedButton(
-                  onPressed: () {
-                    uploadDataFirestore('users', _uid, {
-                      'name': _nameController.text,
-                      'email': _emailController.text,
-                      'phone_number': _phoneNumController.text
-                    });
-                  },
-                  child: const Text('Save'),
-                ),
-              ],
+              ),
             ),
     );
   }
