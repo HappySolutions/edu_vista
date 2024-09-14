@@ -1,4 +1,6 @@
-import 'package:edu_vista/pages/categories/categories_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edu_vista/models/user_model.dart';
 import 'package:edu_vista/pages/chat/chat_page.dart';
 import 'package:edu_vista/pages/course/courses_page.dart';
 import 'package:edu_vista/pages/home/homepage_view.dart';
@@ -30,6 +32,23 @@ class _HomePageState extends State<HomePage> {
     const ProfilePage(),
   ];
   int _selectedIndex = 0;
+  String _photoUrl = '';
+
+  @override
+  void initState() {
+    getInfoFirestore();
+    super.initState();
+  }
+
+  void getInfoFirestore() async {
+    DocumentSnapshot result = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    setState(() {
+      _photoUrl = UserModel.fromDocument(result).photo_url;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,24 +69,46 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavBar(
         curentIndex: _selectedIndex,
-        onTap: (value) => setState(() {
-          _selectedIndex = value;
-        }),
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
         children: [
           BottomNavBarItem(
-            icon: Icons.home,
+            icon: const Icon(Icons.home_outlined),
           ),
           BottomNavBarItem(
-            icon: Icons.book,
+            icon: const Icon(Icons.menu_book_outlined),
           ),
           BottomNavBarItem(
-            icon: Icons.search,
+            icon: const Icon(Icons.search),
           ),
           BottomNavBarItem(
-            icon: Icons.chat,
+            icon: const Icon(Icons.wechat_outlined),
           ),
           BottomNavBarItem(
-            icon: Icons.person,
+            icon: ClipOval(
+              child: Uri.parse(_photoUrl).hasAbsolutePath
+                  ? CachedNetworkImage(
+                      imageUrl: _photoUrl,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.account_circle, color: Colors.grey),
+                      width: 30,
+                      height: 30,
+                      fit: BoxFit.cover,
+                    )
+                  : const SizedBox(
+                      height: 30,
+                      width: 30,
+                      child: Icon(
+                        Icons.account_circle,
+                        color: ColorUtility.gray,
+                      ),
+                    ),
+            ),
           ),
         ],
       ),

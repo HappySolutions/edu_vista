@@ -14,10 +14,10 @@ class ChatPage extends StatelessWidget {
       body: ListView.builder(
         itemCount: demoContactsImage.length,
         itemBuilder: (context, index) => ContactCard(
-          name: "Jenny Wilson",
+          name: "Happy Ahmed",
           status: "Hello there",
           image: demoContactsImage[index],
-          isActive: index.isEven, // for demo
+          isActive: index.isEven,
           press: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const MessagesPage()));

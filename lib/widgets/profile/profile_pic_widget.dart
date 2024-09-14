@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -79,6 +81,7 @@ class _ProfilePicState extends State<ProfilePic> {
         content: Text('Updated Successfuly'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Navigator.pushReplacementNamed(context, 'home');
     }).catchError((e) {
       const snackBar = SnackBar(
         content: Text('Error Happend'),
@@ -163,25 +166,3 @@ class _ProfilePicState extends State<ProfilePic> {
     );
   }
 }
-// var imageResult = await FilePicker.platform
-                  //     .pickFiles(type: FileType.image, withData: true);
-                  // if (imageResult != null) {
-                  //   var storageRef = FirebaseStorage.instance
-                  //       .ref('images/${imageResult.files.first.name}');
-                  //   var uploadResult = await storageRef.putData(
-                  //       imageResult.files.first.bytes!,
-                  //       SettableMetadata(
-                  //         contentType:
-                  //             'image/${imageResult.files.first.name.split('.').last}',
-                  //       ));
-
-                  //   if (uploadResult.state == TaskState.success) {
-                  //     String downloadUrl =
-                  //         await uploadResult.ref.getDownloadURL();
-                  //     PreferencesService.userImage = downloadUrl;
-                  //     setState(() {});
-                  //     print('>>>>>Image upload ${downloadUrl}');
-                  //   }
-                  // } else {
-                  //   print('No file selected');
-                  // }

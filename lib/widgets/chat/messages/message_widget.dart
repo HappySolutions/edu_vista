@@ -1,9 +1,7 @@
 import 'package:edu_vista/models/chat_message.dart';
 import 'package:edu_vista/utils/app_enums.dart';
-import 'package:edu_vista/widgets/chat/messages/audio_message_widget.dart';
 import 'package:edu_vista/widgets/chat/messages/message_status_widget.dart';
 import 'package:edu_vista/widgets/chat/messages/text_message_widget.dart';
-import 'package:edu_vista/widgets/chat/messages/video_message_widget.dart';
 import 'package:flutter/material.dart';
 
 class Message extends StatelessWidget {
@@ -21,9 +19,9 @@ class Message extends StatelessWidget {
         case ChatMessageType.text:
           return TextMessage(message: message);
         case ChatMessageType.audio:
-          return AudioMessage(message: message);
+          return TextMessage(message: message);
         case ChatMessageType.video:
-          return const VideoMessage();
+          return const TextMessage();
         default:
           return const SizedBox();
       }

@@ -14,8 +14,6 @@ class MessagesPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: false,
         elevation: 0,
-        backgroundColor: const Color(0xFF00BF6D),
-        foregroundColor: Colors.white,
         automaticallyImplyLeading: false,
         title: const Row(
           children: [
@@ -32,25 +30,10 @@ class MessagesPage extends StatelessWidget {
                   "Kristin Watson",
                   style: TextStyle(fontSize: 16),
                 ),
-                Text(
-                  "Active 3m ago",
-                  style: TextStyle(fontSize: 12),
-                )
               ],
             )
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.local_phone),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.videocam),
-            onPressed: () {},
-          ),
-          const SizedBox(width: 16.0 / 2),
-        ],
       ),
       body: Column(
         children: [
@@ -73,7 +56,7 @@ class MessagesPage extends StatelessWidget {
 
 List demeChatMessages = [
   ChatMessage(
-    text: "Hi Sajol,",
+    text: "Hi Happy,",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     isSender: false,
@@ -85,25 +68,13 @@ List demeChatMessages = [
     isSender: true,
   ),
   ChatMessage(
-    text: "",
-    messageType: ChatMessageType.audio,
-    messageStatus: MessageStatus.viewed,
-    isSender: false,
-  ),
-  ChatMessage(
-    text: "",
-    messageType: ChatMessageType.video,
-    messageStatus: MessageStatus.viewed,
-    isSender: true,
-  ),
-  ChatMessage(
     text: "Error happend",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.notSent,
     isSender: true,
   ),
   ChatMessage(
-    text: "This looks great man!!",
+    text: "This looks great !!",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     isSender: false,

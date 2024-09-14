@@ -1,4 +1,5 @@
 import 'package:edu_vista/models/chat_message.dart';
+import 'package:edu_vista/utils/color.utility.dart';
 import 'package:flutter/material.dart';
 
 class TextMessage extends StatelessWidget {
@@ -17,7 +18,9 @@ class TextMessage extends StatelessWidget {
         vertical: 16.0 / 2,
       ),
       decoration: BoxDecoration(
-        color: const Color(0xFF00BF6D).withOpacity(message!.isSender ? 1 : 0.1),
+        color: message!.isSender
+            ? ColorUtility.deepYellow
+            : ColorUtility.grayLight,
         borderRadius: BorderRadius.circular(30),
       ),
       child: Text(

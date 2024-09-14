@@ -74,26 +74,27 @@ class _CartPageState extends State<CartPage> {
                             },
                           ),
                   ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Total Price: '),
+                        Text('\$${state.totalPrice.toStringAsFixed(2)}'),
+                      ]),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                            'Total Price: \$${state.totalPrice.toStringAsFixed(2)}'),
-                        SizedBox(
-                          width: 150,
-                          child: CustomElevatedButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                'checkout',
-                                arguments: state.totalPrice,
-                              );
-                            },
-                            child: const Text('Checkout',
-                                style: TextStyle(fontSize: 12)),
-                          ),
+                        CustomElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              'checkout',
+                              arguments: state.totalPrice,
+                            );
+                          },
+                          child: const Text('Checkout',
+                              style: TextStyle(fontSize: 12)),
                         ),
                       ],
                     ),
