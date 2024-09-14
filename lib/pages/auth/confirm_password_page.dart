@@ -51,14 +51,20 @@ class _ConfirmPasswrdPageState extends State<ConfirmPasswrdPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  CustomElevatedButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'SUBMIT',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
-                    ),
-                  )
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomElevatedButton(
+                          onPressed: () {},
+                          child: const Text(
+                            'SUBMIT',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ))

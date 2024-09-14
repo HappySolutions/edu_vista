@@ -91,7 +91,7 @@ class _AuthTemplateWidgetState extends State<AuthTemplateWidget> {
                               child: Text(
                                 'Sign In with Facebook',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 15),
+                                style: TextStyle(fontSize: 12),
                               ),
                             ),
                           ],
@@ -161,9 +161,12 @@ class _AuthTemplateWidgetState extends State<AuthTemplateWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     widget.body,
+                    const SizedBox(height: 10),
                     CustomTextButton(
                       label: 'Forgot Password ?',
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'resetPassword');
+                      },
                     ),
                     Row(
                       children: [

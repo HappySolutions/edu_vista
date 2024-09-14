@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edu_vista/blocs/cart/cart_bloc.dart';
 import 'package:edu_vista/models/user_model.dart';
 import 'package:edu_vista/pages/chat/chat_page.dart';
 import 'package:edu_vista/pages/course/courses_page.dart';
@@ -11,6 +12,7 @@ import 'package:edu_vista/utils/color.utility.dart';
 import 'package:edu_vista/widgets/general/custom_navigationbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   static const String id = 'home';
@@ -33,10 +35,12 @@ class _HomePageState extends State<HomePage> {
   ];
   int _selectedIndex = 0;
   String _photoUrl = '';
+  int cartItemCount = 0;
 
   @override
   void initState() {
     getInfoFirestore();
+    context.read<CartBloc>().add(GetCartCoursesEvent());
     super.initState();
   }
 
@@ -58,11 +62,46 @@ class _HomePageState extends State<HomePage> {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, 'cart');
+            child: BlocBuilder<CartBloc, CartState>(
+              builder: (context, state) {
+                if (state is CartLoaded) {
+                  cartItemCount = state.cartCourses.length;
+                }
+                return Stack(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, 'cart');
+                      },
+                      icon: const Icon(Icons.shopping_cart_outlined),
+                    ),
+                    if (cartItemCount > 0)
+                      Positioned(
+                        right: 0,
+                        top: 5,
+                        child: Container(
+                          padding: const EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          constraints: const BoxConstraints(
+                            minWidth: 18,
+                            minHeight: 18,
+                          ),
+                          child: Text(
+                            '$cartItemCount',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
               },
-              icon: const Icon(Icons.shopping_cart_outlined),
             ),
           ),
         ],
