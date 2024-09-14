@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, avoid_types_as_parameter_names
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -52,7 +52,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
           .toList();
       totalPrice =
           cartCourses.fold(0.0, (sum, course) => sum + (course.price ?? 0.0));
-      emit(CartLoaded(cartCourses: cartCourses, totalPrice: totalPrice));
+      if (cartCourses.isNotEmpty) {
+        emit(CartLoaded(cartCourses: cartCourses, totalPrice: totalPrice));
+      } else {
+        emit(CartEmpty(
+            message: 'Cart is Empty!! Please Add Courses To the cart'));
+      }
     } catch (e) {
       emit(CartError(message: e.toString()));
     }
@@ -112,77 +117,3 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
   }
 }
-
-// class CartBloc extends Bloc<CartEvent, CartState> {
-//   CartBloc() : super(CartInitial()) {
-//     on<CartEventInitial>((event, emit) {
-//       emit(CartInitial());
-//     });
-
-//     on<GetCartCoursesEvent>(_onGetCartCourses);
-//     on<DeleteCartCourseEvent>(_onDeleteCartCourse);
-//     on<BuyNowCourseEvent>(_onBuyNowCourse);
-//   }
-//   CartCourses? cartCourse;
-//   double totalPrice = 0; // Track total price
-
-//   FutureOr<void> _onDeleteCartCourse(
-//       DeleteCartCourseEvent event, Emitter<CartState> emit) async {
-//     cartCourse = event.cartCourse;
-//     await deleteCartCourse(cartCourse!);
-//     // Update total price when course is deleted
-//     totalPrice -= cartCourse!.price ?? 0;
-//     emit(CartTotalUpdated(totalPrice: totalPrice));
-//   }
-
-//   FutureOr<void> _onGetCartCourses(
-//       GetCartCoursesEvent event, Emitter<CartState> emit) async {
-//     List<CartCourses> cartCourses = [];
-//     emit(CartLoading());
-//     cartCourses = await getCartCourses(cartCourses);
-//     if (cartCourses.isEmpty) {
-//       emit(CartEmpty(message: 'Please Add Courses To the cart'));
-//     } else {
-//       totalPrice = _calculateTotal(cartCourses);
-//       emit(CartLoaded(cartCourses: cartCourses, totalPrice: totalPrice));
-//     }
-//   }
-
-//   FutureOr<void> _onBuyNowCourse(
-//       BuyNowCourseEvent event, Emitter<CartState> emit) async {
-//     // Update total price when a course is purchased
-//     totalPrice += event.cartCourse.price ?? 0;
-//     emit(CartTotalUpdated(totalPrice: totalPrice));
-//   }
-
-//   double _calculateTotal(List<CartCourses> cartCourses) {
-//     return cartCourses.fold(0.0, (sum, course) => sum + (course.price ?? 0));
-//   }
-
-//   Future<List<CartCourses>> getCartCourses(
-//       List<CartCourses> cartCourses) async {
-//     try {
-//       FirebaseFirestore firestore = FirebaseFirestore.instance;
-//       String uid = FirebaseAuth.instance.currentUser!.uid;
-//       QuerySnapshot responce = await firestore
-//           .collection('cart')
-//           .where('user_id', isEqualTo: uid)
-//           .get();
-//       List<DocumentSnapshot> result = responce.docs;
-//       cartCourses = List<CartCourses>.from(
-//         result.map((item) =>
-//             CartCourses.fromJson(item.data() as Map<String, dynamic>)),
-//       );
-//     } catch (e) {
-//       print('Error: $e');
-//     }
-//     return cartCourses;
-//   }
-// }
-
-// Future<void> deleteCartCourse(CartCourses cartCourse) async {
-//   await FirebaseFirestore.instance
-//       .collection('cart')
-//       .doc(cartCourse.id)
-//       .delete();
-// }

@@ -137,7 +137,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> logout() async {}
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+    PreferencesService.clearData();
+  }
 
   Future<void> resetPassword({
     required BuildContext context,

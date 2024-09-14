@@ -5,10 +5,16 @@ class ProfileMenu extends StatelessWidget {
   const ProfileMenu({
     super.key,
     required this.text,
+    this.textColor,
+    this.iconColor,
+    this.backgroundColor,
     this.press,
   });
 
   final String text;
+  final Color? textColor;
+  final Color? iconColor;
+  final Color? backgroundColor;
   final VoidCallback? press;
 
   @override
@@ -17,10 +23,11 @@ class ProfileMenu extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextButton(
         style: TextButton.styleFrom(
-          foregroundColor: ColorUtility.deepYellow,
           padding: const EdgeInsets.all(20),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-          backgroundColor: ColorUtility.grayExtraLight,
+          backgroundColor: (backgroundColor != null)
+              ? backgroundColor
+              : ColorUtility.grayExtraLight,
         ),
         onPressed: press,
         child: Row(
@@ -28,14 +35,17 @@ class ProfileMenu extends StatelessWidget {
             Expanded(
               child: Text(
                 text,
-                style: const TextStyle(
-                  color: ColorUtility.mediumlBlack,
+                style: TextStyle(
+                  color: (textColor != null)
+                      ? textColor
+                      : ColorUtility.mediumlBlack,
                 ),
               ),
             ),
-            const Icon(
+            Icon(
               Icons.double_arrow,
-              color: ColorUtility.mediumlBlack,
+              color:
+                  (iconColor != null) ? iconColor : ColorUtility.mediumlBlack,
             ),
           ],
         ),

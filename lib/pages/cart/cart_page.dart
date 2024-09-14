@@ -42,28 +42,29 @@ class _CartPageState extends State<CartPage> {
               return Column(
                 children: [
                   Expanded(
-                    child: (state.cartCourses.isEmpty && state.totalPrice > 0)
+                    child: state.cartCourses.isEmpty && state.totalPrice > 0
                         ? const Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Center(
                               child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Cart is Loaded...',
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                          Text(
-                                            'Please Proceed to Check Out',
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                        ])
-                                  ]),
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Cart is Loaded...',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      Text(
+                                        'Please Proceed to Check Out',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           )
                         : ListView.builder(
@@ -75,28 +76,24 @@ class _CartPageState extends State<CartPage> {
                           ),
                   ),
                   Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Total Price: '),
-                        Text('\$${state.totalPrice.toStringAsFixed(2)}'),
-                      ]),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustomElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(
-                              context,
-                              'checkout',
-                              arguments: state.totalPrice,
-                            );
-                          },
-                          child: const Text('Checkout',
-                              style: TextStyle(fontSize: 12)),
-                        ),
-                      ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Total Price: '),
+                      Text('\$${state.totalPrice.toStringAsFixed(2)}'),
+                    ],
+                  ),
+                  CustomElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        'checkout',
+                        arguments: state.totalPrice,
+                      );
+                    },
+                    width: double.infinity,
+                    child: const Text(
+                      'Checkout',
+                      style: TextStyle(fontSize: 12),
                     ),
                   ),
                 ],

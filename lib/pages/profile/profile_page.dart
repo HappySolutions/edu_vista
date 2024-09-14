@@ -1,9 +1,11 @@
 // ignore_for_file: avoid_print
 
+import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/services/pref.service.dart';
 import 'package:edu_vista/widgets/profile/profile_menu_widget.dart';
 import 'package:edu_vista/widgets/profile/profile_pic_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
   static const String id = 'profile';
@@ -36,8 +38,11 @@ class ProfilePage extends StatelessWidget {
             ),
             ProfileMenu(
               text: "Log Out",
-              press: () {
-                PreferencesService.clearData();
+              backgroundColor: Colors.transparent,
+              textColor: Colors.red,
+              iconColor: Colors.red,
+              press: () async {
+                await context.read<AuthCubit>().logout();
                 Navigator.popAndPushNamed(context, 'LoginPage');
               },
             ),
