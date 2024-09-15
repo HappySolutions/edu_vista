@@ -77,48 +77,76 @@ class _CoursesByCategoryWidgetState extends State<CoursesByCategoryWidget> {
                         ),
                       ),
                       const SizedBox(height: 5), // Space between elements
-                      Row(
-                        children: [
-                          Text(
-                            courses[index].rating.toString(),
-                            style: const TextStyle(
-                                fontSize: 10.0, color: ColorUtility.main),
-                          ),
-                          const SizedBox(width: 4.0),
-                          const Icon(Icons.star,
-                              size: 15, color: ColorUtility.main),
-                        ],
-                      ),
-                      Text(
-                        courses[index].title ?? 'No Name',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12.0,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  courses[index].rating.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 10.0, color: ColorUtility.main),
+                                ),
+                                const SizedBox(width: 4.0),
+                                // Display the stars based on rating
+                                Row(
+                                  children: List.generate(5, (starIndex) {
+                                    double rating =
+                                        courses[index].rating ?? 0.0;
+                                    if (starIndex < rating.floor()) {
+                                      // Full star
+                                      return const Icon(Icons.star,
+                                          size: 15, color: ColorUtility.main);
+                                    } else if (starIndex < rating) {
+                                      // Half star
+                                      return const Icon(Icons.star_half,
+                                          size: 15, color: ColorUtility.main);
+                                    } else {
+                                      // Empty star
+                                      return const Icon(Icons.star_border,
+                                          size: 15, color: Colors.grey);
+                                    }
+                                  }),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              courses[index].title ?? 'No Name',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12.0,
+                              ),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(width: 8.0),
+                            Row(
+                              children: [
+                                const Icon(Icons.person_2_outlined),
+                                Text(
+                                  courses[index].instructor?.name ?? 'No Name',
+                                  style: const TextStyle(
+                                      fontSize: 10.0,
+                                      fontWeight: FontWeight.w400),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                                height: 8.0), // Space between elements
+                            Text(
+                              '\$${courses[index].price.toString()}',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 12.0,
+                                  color: ColorUtility.main),
+                            ),
+                          ],
                         ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(width: 8.0),
-                      Row(
-                        children: [
-                          const Icon(Icons.person_2_outlined),
-                          Text(
-                            courses[index].instructor?.name ?? 'No Name',
-                            style: const TextStyle(
-                                fontSize: 10.0, fontWeight: FontWeight.w400),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8.0), // Space between elements
-                      Text(
-                        '\$${courses[index].price.toString()}',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 12.0,
-                            color: ColorUtility.main),
                       ),
                     ],
                   ),

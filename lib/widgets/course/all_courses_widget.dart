@@ -130,7 +130,6 @@ class _AllCoursesWidgetState extends State<AllCoursesWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
                                 courses[index].rating.toString(),
@@ -138,8 +137,21 @@ class _AllCoursesWidgetState extends State<AllCoursesWidget> {
                                     fontSize: 10.0, color: ColorUtility.main),
                               ),
                               const SizedBox(width: 4.0),
-                              const Icon(Icons.star,
-                                  size: 15, color: ColorUtility.main),
+                              Row(
+                                children: List.generate(5, (starIndex) {
+                                  double rating = courses[index].rating ?? 0.0;
+                                  if (starIndex < rating.floor()) {
+                                    return const Icon(Icons.star,
+                                        size: 15, color: ColorUtility.main);
+                                  } else if (starIndex < rating) {
+                                    return const Icon(Icons.star_half,
+                                        size: 15, color: ColorUtility.main);
+                                  } else {
+                                    return const Icon(Icons.star_border,
+                                        size: 15, color: Colors.grey);
+                                  }
+                                }),
+                              ),
                             ],
                           ),
                           Text(
