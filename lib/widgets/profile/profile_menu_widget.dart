@@ -23,7 +23,7 @@ class ProfileMenu extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextButton(
         style: TextButton.styleFrom(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(15),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
           backgroundColor: (backgroundColor != null)
               ? backgroundColor

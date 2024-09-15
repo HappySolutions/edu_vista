@@ -61,39 +61,48 @@ class _ProfilePageState extends State<ProfilePage> {
     switch (title) {
       case 'Settings':
         sectionContent = Container(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.all(20),
           color: Colors.transparent,
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               const Text(
                 'Change Theme Mode',
               ),
-              Radio<String>(
-                value: 'Light',
-                groupValue: _themeMode,
-                onChanged: (String? value) {
-                  setState(() {
-                    _themeMode = value!;
-                  });
-                },
-                activeColor: Colors.yellow,
-              ),
-              const Text(
-                'Light',
-              ),
-              Radio<String>(
-                value: 'Dark',
-                groupValue: _themeMode,
-                onChanged: (String? value) {
-                  setState(() {
-                    _themeMode = value!;
-                  });
-                },
-                activeColor: Colors.yellow,
-              ),
-              const Text(
-                'Dark',
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Row(children: [
+                    Radio<String>(
+                      value: 'Light',
+                      groupValue: _themeMode,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _themeMode = value!;
+                        });
+                      },
+                      activeColor: Colors.yellow,
+                    ),
+                    const Text(
+                      'Light',
+                    ),
+                  ]),
+                  Row(children: [
+                    Radio<String>(
+                      value: 'Dark',
+                      groupValue: _themeMode,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _themeMode = value!;
+                        });
+                      },
+                      activeColor: Colors.yellow,
+                    ),
+                    const Text(
+                      'Dark',
+                    ),
+                  ]),
+                ],
               ),
             ],
           ),
