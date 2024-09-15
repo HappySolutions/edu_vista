@@ -10,12 +10,14 @@ class UserModel {
   String phone_number;
   String photo_url;
   String created_at;
+  final bool isOnline;
 
   UserModel(
       {required this.id,
       required this.name,
       required this.email,
       required this.password,
+      this.isOnline = false,
       required this.phone_number,
       required this.photo_url,
       required this.created_at});
@@ -28,7 +30,8 @@ class UserModel {
       'password': password,
       'phone_number': phone_number,
       'photo_url': photo_url,
-      'created_at': created_at
+      'created_at': created_at,
+      'isOnline': isOnline,
     };
   }
 
@@ -40,6 +43,7 @@ class UserModel {
     String phone_number = '';
     String photo_url = '';
     String created_at = '';
+    bool isOnline = false;
 
     try {
       id = doc.get('id');
@@ -83,13 +87,32 @@ class UserModel {
       created_at = '';
     }
 
+    try {
+      isOnline = doc.get('isOnline');
+    } catch (e) {
+      isOnline = false;
+    }
+
     return UserModel(
-        id: id,
-        name: name,
-        email: email,
-        password: password,
-        phone_number: phone_number,
-        photo_url: photo_url,
-        created_at: created_at);
+      id: id,
+      name: name,
+      email: email,
+      password: password,
+      phone_number: phone_number,
+      photo_url: photo_url,
+      created_at: created_at,
+      isOnline: isOnline,
+    );
   }
+
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        id: json['id'],
+        name: json['name'],
+        email: json['email'],
+        password: json['password'],
+        phone_number: json['phone_number'],
+        photo_url: json['photo_url'],
+        created_at: json['created_at'],
+        isOnline: json['isOnline'] ?? false,
+      );
 }

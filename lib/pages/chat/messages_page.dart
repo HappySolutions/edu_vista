@@ -1,88 +1,75 @@
-import 'package:edu_vista/models/chat_message.dart';
-import 'package:edu_vista/utils/app_enums.dart';
-import 'package:edu_vista/widgets/chat/chat_input_widget.dart';
-import 'package:edu_vista/widgets/chat/messages/message_widget.dart';
+import 'package:edu_vista/blocs/message/messages_bloc.dart';
+import 'package:edu_vista/models/user_model.dart';
+import 'package:edu_vista/widgets/chat/chat_messages.dart';
+import 'package:edu_vista/widgets/chat/chat_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MessagesPage extends StatelessWidget {
-  const MessagesPage({super.key});
+class MessagesPage extends StatefulWidget {
+  final UserModel user;
+
+  const MessagesPage({super.key, required this.user});
+
+  @override
+  State<MessagesPage> createState() => _MessagesPageState();
+}
+
+class _MessagesPageState extends State<MessagesPage> {
+  @override
+  void initState() {
+    context
+        .read<MessagesBloc>()
+        .add(GetUserMessagesEvent(receiverId: widget.user.id));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        centerTitle: false,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        title: const Row(
+        title: Row(
           children: [
-            BackButton(),
             CircleAvatar(
-              backgroundImage:
-                  NetworkImage("https://i.postimg.cc/cCsYDjvj/user-2.png"),
+              backgroundImage: widget.user.photo_url.isNotEmpty
+                  ? NetworkImage(widget.user.photo_url)
+                  : const AssetImage('assets/images/logo.png') as ImageProvider,
+              radius: 20,
             ),
-            SizedBox(width: 16.0 * 0.75),
+            const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Kristin Watson",
-                  style: TextStyle(fontSize: 16),
+                  widget.user.name,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  widget.user.isOnline ? 'Online' : 'Offline',
+                  style: TextStyle(
+                    color: widget.user.isOnline ? Colors.green : Colors.grey,
+                    fontSize: 14,
+                  ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ListView.builder(
-                itemCount: demeChatMessages.length,
-                itemBuilder: (context, index) =>
-                    Message(message: demeChatMessages[index]),
-              ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: ChatMessages(receiverId: widget.user.id),
             ),
-          ),
-          const ChatInputField(),
-        ],
+            ChatTextField(receiverId: widget.user.id),
+          ],
+        ),
       ),
     );
   }
 }
-
-List demeChatMessages = [
-  ChatMessage(
-    text: "Hi Happy,",
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.viewed,
-    isSender: false,
-  ),
-  ChatMessage(
-    text: "Hello, How are you?",
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.viewed,
-    isSender: true,
-  ),
-  ChatMessage(
-    text: "Error happend",
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.notSent,
-    isSender: true,
-  ),
-  ChatMessage(
-    text: "This looks great !!",
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.viewed,
-    isSender: false,
-  ),
-  ChatMessage(
-    text: "Glad you like it",
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.notView,
-    isSender: true,
-  ),
-];

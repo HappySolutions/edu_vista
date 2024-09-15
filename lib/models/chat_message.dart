@@ -1,15 +1,15 @@
 import 'package:edu_vista/utils/app_enums.dart';
 
 class ChatMessage {
-  final String text;
+  final String senderId;
+  final String receiverId;
+  final String content;
   final ChatMessageType messageType;
-  final MessageStatus messageStatus;
-  final bool isSender;
 
   ChatMessage({
-    this.text = '',
+    required this.senderId,
+    required this.receiverId,
+    required this.content,
     required this.messageType,
-    required this.messageStatus,
-    required this.isSender,
   });
 }

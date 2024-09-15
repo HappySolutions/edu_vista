@@ -144,33 +144,6 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
                             TextButton(
-                              // onPressed: () async {
-                              //   final idCourseToCart = uuid.v4();
-                              //   try {
-                              //     _firestore
-                              //         .collection('cart')
-                              //         .doc(idCourseToCart)
-                              //         .set({
-                              //       'id': idCourseToCart,
-                              //       'user_id': _userId,
-                              //       'title': widget.course.title,
-                              //       'image': widget.course.image,
-                              //       'instructor': {
-                              //         'name': widget.course.instructor?.name,
-                              //         'graduation_from': widget
-                              //             .course.instructor?.graduation_from,
-                              //         'years_of_experience': widget.course
-                              //             .instructor?.years_of_experience,
-                              //       },
-                              //       'price': widget.course.price,
-                              //       'rating': widget.course.rating,
-                              //     });
-                              //   } on FirebaseException catch (e) {
-                              //     print(e.message ?? '');
-                              //     return;
-                              //   }
-                              //   Navigator.pushNamed(context, 'cart');
-                              // },
                               onPressed: () async {
                                 final cartCollection =
                                     _firestore.collection('cart');

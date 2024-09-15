@@ -3,8 +3,10 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:edu_vista/app_routes.dart';
 import 'package:edu_vista/blocs/cart/cart_bloc.dart';
+import 'package:edu_vista/blocs/chat/chat_bloc.dart';
 import 'package:edu_vista/blocs/course/course_bloc.dart';
 import 'package:edu_vista/blocs/lecture/lecture_bloc.dart';
+import 'package:edu_vista/blocs/message/messages_bloc.dart';
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/firebase_options.dart';
 import 'package:edu_vista/pages/onboarding/splash_page.dart';
@@ -35,6 +37,8 @@ void main() async {
       BlocProvider(create: (ctx) => CourseBloc()),
       BlocProvider(create: (ctx) => LectureBloc()),
       BlocProvider(create: (ctx) => CartBloc()),
+      BlocProvider(create: (ctx) => ChatBloc()),
+      BlocProvider(create: (ctx) => MessagesBloc()),
     ], child: const MyApp()
         // DevicePreview(
         //   enabled: !kReleaseMode,

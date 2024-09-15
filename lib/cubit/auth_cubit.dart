@@ -99,7 +99,8 @@ class AuthCubit extends Cubit<AuthState> {
             'email': emailController.text,
             'photo_url': user.photoURL,
             'created_at': DateTime.now().millisecondsSinceEpoch.toString(),
-            'phone_number': ''
+            'phone_number': '',
+            'isOnline': null,
           });
         }
         if (!context.mounted) return;

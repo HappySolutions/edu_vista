@@ -18,17 +18,13 @@ class TextMessage extends StatelessWidget {
         vertical: 16.0 / 2,
       ),
       decoration: BoxDecoration(
-        color: message!.isSender
-            ? ColorUtility.deepYellow
-            : ColorUtility.grayLight,
+        color: ColorUtility.deepYellow,
         borderRadius: BorderRadius.circular(30),
       ),
       child: Text(
-        message!.text,
+        message!.content,
         style: TextStyle(
-          color: message!.isSender
-              ? Colors.white
-              : Theme.of(context).textTheme.bodyLarge!.color,
+          color: Theme.of(context).textTheme.bodyLarge!.color,
         ),
       ),
     );

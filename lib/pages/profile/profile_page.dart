@@ -1,16 +1,24 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:edu_vista/cubit/auth_cubit.dart';
-import 'package:edu_vista/services/pref.service.dart';
+import 'package:edu_vista/utils/color.utility.dart';
 import 'package:edu_vista/widgets/profile/profile_menu_widget.dart';
 import 'package:edu_vista/widgets/profile/profile_pic_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   static const String id = 'profile';
 
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  Map<String, bool> _expandedSections = {};
+  String _themeMode = 'Light';
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +36,8 @@ class ProfilePage extends StatelessWidget {
                 Navigator.pushNamed(context, 'edit_settings');
               },
             ),
-            ProfileMenu(
-              text: "Settings",
-              press: () {},
-            ),
-            ProfileMenu(
-              text: "About Us",
-              press: () {},
-            ),
+            _buildExpandedSection('Settings'),
+            _buildExpandedSection('About Us'),
             ProfileMenu(
               text: "Log Out",
               backgroundColor: Colors.transparent,
@@ -49,6 +51,131 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildExpandedSection(String title) {
+    bool isExpanded = _expandedSections[title] ?? false;
+
+    Widget sectionContent;
+    switch (title) {
+      case 'Settings':
+        sectionContent = Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          color: Colors.transparent,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              const Text(
+                'Change Theme Mode',
+              ),
+              Radio<String>(
+                value: 'Light',
+                groupValue: _themeMode,
+                onChanged: (String? value) {
+                  setState(() {
+                    _themeMode = value!;
+                  });
+                },
+                activeColor: Colors.yellow,
+              ),
+              const Text(
+                'Light',
+              ),
+              Radio<String>(
+                value: 'Dark',
+                groupValue: _themeMode,
+                onChanged: (String? value) {
+                  setState(() {
+                    _themeMode = value!;
+                  });
+                },
+                activeColor: Colors.yellow,
+              ),
+              const Text(
+                'Dark',
+              ),
+            ],
+          ),
+        );
+
+        break;
+
+      case 'About Us':
+        sectionContent = const Column(
+          children: [
+            Text('Course Title: '),
+            Text('Price: Free'),
+          ],
+        );
+
+        break;
+      default:
+        sectionContent = Text('No content available');
+    }
+
+    return ExpansionTile(
+      showTrailingIcon: false,
+      title: Container(
+        decoration: BoxDecoration(
+          border: isExpanded
+              ? Border.all(
+                  color: ColorUtility.deepYellow,
+                  width: 2.0,
+                )
+              : null,
+          borderRadius: BorderRadius.circular(6),
+          color: isExpanded ? Colors.transparent : ColorUtility.grayExtraLight,
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                color: isExpanded
+                    ? ColorUtility.deepYellow
+                    : ColorUtility.mediumlBlack,
+              ),
+            ),
+            Icon(
+              isExpanded ? Icons.keyboard_arrow_down : Icons.double_arrow,
+              color: isExpanded
+                  ? ColorUtility.deepYellow
+                  : ColorUtility.mediumlBlack,
+            ),
+          ],
+        ),
+      ),
+      iconColor: ColorUtility.deepYellow,
+      maintainState: true,
+      collapsedBackgroundColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+      ),
+      collapsedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+        side: BorderSide.none,
+      ),
+      onExpansionChanged: (expanded) {
+        setState(() {
+          _expandedSections[title] = expanded;
+        });
+      },
+      children: [
+        SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [sectionContent],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
