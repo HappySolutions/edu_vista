@@ -28,11 +28,15 @@ class _SearchPageState extends State<SearchPage> {
                   query = value;
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Search...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
+                hintStyle: TextStyle(color: Colors.grey),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                suffixIcon: Icon(Icons.search, color: Colors.grey),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
               ),
             ),
             const SizedBox(height: 10),

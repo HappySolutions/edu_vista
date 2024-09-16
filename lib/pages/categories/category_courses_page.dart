@@ -112,7 +112,6 @@ class _CategoryCoursesPageState extends State<CategoryCoursesPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
                                 courses[index].rating.toString(),
@@ -120,8 +119,25 @@ class _CategoryCoursesPageState extends State<CategoryCoursesPage> {
                                     fontSize: 10.0, color: ColorUtility.main),
                               ),
                               const SizedBox(width: 4.0),
-                              const Icon(Icons.star,
-                                  size: 15, color: ColorUtility.main),
+                              // Display the stars based on rating
+                              Row(
+                                children: List.generate(5, (starIndex) {
+                                  double rating = courses[index].rating ?? 0.0;
+                                  if (starIndex < rating.floor()) {
+                                    // Full star
+                                    return const Icon(Icons.star,
+                                        size: 15, color: ColorUtility.main);
+                                  } else if (starIndex < rating) {
+                                    // Half star
+                                    return const Icon(Icons.star_half,
+                                        size: 15, color: ColorUtility.main);
+                                  } else {
+                                    // Empty star
+                                    return const Icon(Icons.star_border,
+                                        size: 15, color: Colors.grey);
+                                  }
+                                }),
+                              ),
                             ],
                           ),
                           Text(

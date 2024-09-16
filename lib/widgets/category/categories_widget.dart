@@ -12,7 +12,10 @@ class CategoriesWidget extends StatefulWidget {
 }
 
 class _CategoriesWidgetState extends State<CategoriesWidget> {
-  var futureCall = FirebaseFirestore.instance.collection('categories').get();
+  var futureCall = FirebaseFirestore.instance
+      .collection('categories')
+      .orderBy('name', descending: true)
+      .get();
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +35,11 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                   .map((e) => CategoryData.fromJson({'id': e.id, ...e.data()}))
                   .toList() ??
               []);
+          var limitedCategories = categories.take(3).toList();
 
           return ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: categories.length,
+            itemCount: limitedCategories.length,
             separatorBuilder: (context, index) => const SizedBox(
               width: 10,
             ),
