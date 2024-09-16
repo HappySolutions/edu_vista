@@ -29,7 +29,13 @@ class _CoursesPageState extends State<CoursesPage> {
       appBar: widget.showAppbar
           ? AppBar(
               title: Center(
-                child: Text(capitalizeEachWord(widget.query)),
+                child: (widget.query.isNotEmpty)
+                    ? Text(
+                        capitalizeEachWord(widget.query),
+                      )
+                    : Text(
+                        capitalizeEachWord(widget.selectedQuery),
+                      ),
               ),
             )
           : const PreferredSize(
