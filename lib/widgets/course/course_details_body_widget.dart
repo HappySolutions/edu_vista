@@ -24,7 +24,6 @@ class _CourseDetailsBodyWidgetState extends State<CourseDetailsBodyWidget> {
   final _firestore = FirebaseFirestore.instance;
   String? _courseId;
   String? _userId;
-  //TODO progress
   bool _lecturesWatched = false;
 
   @override
@@ -104,25 +103,3 @@ class _CourseDetailsBodyWidgetState extends State<CourseDetailsBodyWidget> {
     );
   }
 }
-
-/*
-  Future<void> _getLecturesWatched() async {
-    try {
-      String documentId = '${_userId}_$_courseId';
-      DocumentSnapshot snapshot = await _firestore
-          .collection('userCourses')
-          .doc(documentId)
-          .get();
-
-      if (snapshot.exists) {
-        setState(() {
-          _lecturesWatched = snapshot.get('lecturesWatched') as int;
-        });
-      } else {
-        print('Document does not exist');
-      }
-    } catch (e) {
-      print('Error getting lectures watched: $e');
-    }
-  }
- */

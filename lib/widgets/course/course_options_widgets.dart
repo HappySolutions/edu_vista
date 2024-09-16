@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_vista/blocs/course/course_bloc.dart';
 import 'package:edu_vista/models/course.dart';
@@ -56,10 +58,10 @@ class _CourseOptionsWidgetsState extends State<CourseOptionsWidgets> {
   Widget build(BuildContext context) {
     switch (widget.courseOption) {
       case CourseOptions.Lecture:
-        return _buildLectureSection();
+        return _buildLectureSection('Lecture');
 
       case CourseOptions.Download:
-        return _buildDownloadSection();
+        return _buildLectureSection('Download');
 
       case CourseOptions.Certificate:
         return _buildCertificateSection();
@@ -80,7 +82,7 @@ class _CourseOptionsWidgetsState extends State<CourseOptionsWidgets> {
     }
   }
 
-  Widget _buildLectureSection() {
+  Widget _buildLectureSection(String title) {
     if (isLoading) {
       return const Center(
         child: CircularProgressIndicator(),
@@ -90,80 +92,135 @@ class _CourseOptionsWidgetsState extends State<CourseOptionsWidgets> {
       return const Center(
         child: Text('No lectures found'),
       );
-    } else {
-      return GridView.count(
-        mainAxisSpacing: 15,
-        crossAxisSpacing: 15,
-        shrinkWrap: true,
-        crossAxisCount: 2,
-        children: List.generate(lectures!.length, (index) {
-          return InkWell(
-            onTap: () {
-              widget.onLectureChosen(lectures![index]);
-              selectedLecture = lectures![index];
-              setState(() {});
-            },
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: selectedLecture?.id == lectures![index].id
-                    ? ColorUtility.deepYellow
-                    : const Color(0xffE0E0E0),
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: Center(
-                child: Text(
-                  lectures![index].title ?? 'No Name',
-                  style: TextStyle(
-                      color: selectedLecture?.id == lectures![index].id
-                          ? Colors.white
-                          : Colors.black),
-                ),
-              ),
-            ),
-          );
-        }),
-      );
     }
+
+    return GridView.count(
+      mainAxisSpacing: 15,
+      crossAxisSpacing: 15,
+      shrinkWrap: true,
+      crossAxisCount: 2,
+      childAspectRatio: 0.90,
+      children: List.generate(lectures!.length, (index) {
+        return _buildLectureTile(index, title);
+      }),
+    );
   }
 
-  Widget _buildDownloadSection() {
+  Widget _buildLectureTile(int index, String title) {
+    final lecture = lectures![index];
+    final isSelected = selectedLecture?.id == lecture.id;
+
+    return InkWell(
+      onTap: () async {
+        if (title == 'Lecture') {
+          widget.onLectureChosen(lecture);
+          selectedLecture = lecture;
+          setState(() {});
+        } else {
+          selectedLecture = lecture;
+          setState(() {});
+          final Uri url = Uri.parse('https://google.com');
+          if (await canLaunchUrl(url)) {
+            await launchUrl(url);
+          } else {
+            print('Could not launch $url');
+          }
+        }
+
+        selectedLecture = lecture;
+        setState(() {});
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: isSelected ? ColorUtility.deepYellow : const Color(0xffE0E0E0),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildLectureHeader(index, isSelected, title),
+            const SizedBox(height: 8),
+            _buildLectureDetails(lecture, isSelected),
+            const Spacer(),
+            _buildLectureFooter(lecture, isSelected, title),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLectureHeader(int index, bool isSelected, String title) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'Lecture ${index + 1}',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+            color: isSelected ? Colors.white : Colors.black,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+        Icon(
+          title == 'Lecture'
+              ? Icons.download_rounded
+              : Icons.keyboard_double_arrow_right,
+          color: isSelected ? Colors.white : Colors.black,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLectureDetails(Lecture lecture, bool isSelected) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            'Download Course Materials',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        Text(
+          lecture.title ?? 'No Name',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: isSelected ? Colors.white : Colors.black,
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Course: ${widget.course.title}',
-            style: const TextStyle(fontSize: 16),
+        const SizedBox(height: 6),
+        Text(
+          lecture.description ?? 'No description available',
+          style: TextStyle(
+            fontSize: 12,
+            color: isSelected ? Colors.white70 : Colors.black54,
           ),
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Instructor: ${widget.course.instructor?.name ?? 'Unknown'}',
-            style: const TextStyle(fontSize: 16),
+      ],
+    );
+  }
+
+  Widget _buildLectureFooter(Lecture lecture, bool isSelected, String title) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'Duration: ${lecture.duration ?? 'N/A'}',
+          style: TextStyle(
+            fontSize: 12,
+            color: isSelected ? Colors.white : Colors.black,
           ),
+          overflow: TextOverflow.ellipsis,
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CustomElevatedButton(
-            onPressed: () async {
-              const url = 'https://google.com';
-              if (await canLaunchUrl(url as Uri)) {
-                await launchUrl(url as Uri);
-              } else {
-                throw 'Could not launch $url';
-              }
-            },
-            child: const Text('Open Course Material'),
+        CircleAvatar(
+          radius: 15,
+          backgroundColor: isSelected ? Colors.white : Colors.black,
+          child: Icon(
+            title == 'Lecture'
+                ? Icons.play_arrow_rounded
+                : Icons.play_circle_outlined,
+            color: isSelected ? ColorUtility.deepYellow : Colors.white,
           ),
         ),
       ],
@@ -309,7 +366,14 @@ class _CourseOptionsWidgetsState extends State<CourseOptionsWidgets> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
                     child: CustomElevatedButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        final Uri url = Uri.parse('https://google.com');
+                        if (await canLaunchUrl(url)) {
+                          await launchUrl(url);
+                        } else {
+                          print('Could not launch $url');
+                        }
+                      },
                       child: const Text('Share'),
                     ),
                   ),

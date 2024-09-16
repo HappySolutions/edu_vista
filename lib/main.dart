@@ -2,6 +2,7 @@
 
 import 'package:device_preview/device_preview.dart';
 import 'package:edu_vista/app_routes.dart';
+import 'package:edu_vista/blocs/theme/theme_bloc.dart';
 import 'package:edu_vista/blocs/cart/cart_bloc.dart';
 import 'package:edu_vista/blocs/chat/chat_bloc.dart';
 import 'package:edu_vista/blocs/course/course_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/firebase_options.dart';
 import 'package:edu_vista/pages/onboarding/splash_page.dart';
 import 'package:edu_vista/services/pref.service.dart';
+import 'package:edu_vista/theme.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +41,7 @@ void main() async {
       BlocProvider(create: (ctx) => CartBloc()),
       BlocProvider(create: (ctx) => ChatBloc()),
       BlocProvider(create: (ctx) => MessagesBloc()),
+      BlocProvider(create: (ctx) => ThemeBloc()),
     ], child: const MyApp()
         // DevicePreview(
         //   enabled: !kReleaseMode,
@@ -55,18 +58,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      scrollBehavior: _CustomScrollBehaviour(),
-      debugShowCheckedModeBanner: false,
-      title: 'Edu Vista',
-      theme: ThemeData(
-        scaffoldBackgroundColor: ColorUtility.gbScaffold,
-        fontFamily: ' PlusJakartaSans',
-        colorScheme: ColorScheme.fromSeed(seedColor: ColorUtility.main),
-        useMaterial3: true,
-      ),
-      onGenerateRoute: generateRoute,
-      initialRoute: SplashPage.id,
+    return BlocBuilder<ThemeBloc, ThemeMode>(
+      builder: (context, state) {
+        return MaterialApp(
+          scrollBehavior: _CustomScrollBehaviour(),
+          debugShowCheckedModeBanner: false,
+          title: 'Edu Vista',
+          theme: lightTheme,
+          themeMode: state,
+          darkTheme: darkTheme,
+          onGenerateRoute: generateRoute,
+          initialRoute: SplashPage.id,
+        );
+      },
     );
   }
 }

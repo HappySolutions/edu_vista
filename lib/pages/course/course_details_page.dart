@@ -163,46 +163,7 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
                                     ),
                                   );
                                 } else {
-                                  // Course is not in the cart, proceed to add it
-                                  final idCourseToCart = uuid.v4();
-                                  try {
-                                    await cartCollection
-                                        .doc(idCourseToCart)
-                                        .set({
-                                      'id': idCourseToCart,
-                                      'user_id': _userId,
-                                      'title': widget.course.title,
-                                      'image': widget.course.image,
-                                      'instructor': {
-                                        'name': widget.course.instructor?.name,
-                                        'graduation_from': widget
-                                            .course.instructor?.graduation_from,
-                                        'years_of_experience': widget.course
-                                            .instructor?.years_of_experience,
-                                      },
-                                      'price': widget.course.price,
-                                      'rating': widget.course.rating,
-                                    });
-
-                                    // Notify user and navigate to cart
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            'Course added to cart successfully!'),
-                                        backgroundColor: Colors.green,
-                                      ),
-                                    );
-                                    Navigator.pushNamed(context, 'cart');
-                                  } on FirebaseException catch (e) {
-                                    print(e.message ?? '');
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            'Failed to add course to cart.'),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  }
+                                  await _addToCart(cartCollection, context);
                                 }
                               },
                               child: const Text('Add To Cart'),
@@ -235,5 +196,42 @@ class _CourseDetailsPageState extends State<CourseDetailsPage> {
         ],
       ),
     ));
+  }
+
+  Future<void> _addToCart(
+      CollectionReference<Map<String, dynamic>> cartCollection,
+      BuildContext context) async {
+    final idCourseToCart = uuid.v4();
+    try {
+      await cartCollection.doc(idCourseToCart).set({
+        'id': idCourseToCart,
+        'user_id': _userId,
+        'title': widget.course.title,
+        'image': widget.course.image,
+        'instructor': {
+          'name': widget.course.instructor?.name,
+          'graduation_from': widget.course.instructor?.graduation_from,
+          'years_of_experience': widget.course.instructor?.years_of_experience,
+        },
+        'price': widget.course.price,
+        'rating': widget.course.rating,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Course added to cart successfully!'),
+          backgroundColor: ColorUtility.deepYellow,
+        ),
+      );
+      Navigator.pushNamed(context, 'cart');
+    } on FirebaseException catch (e) {
+      print(e.message ?? '');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to add course to cart.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 }

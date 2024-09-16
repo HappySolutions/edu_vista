@@ -19,6 +19,12 @@ class AllCoursesWidget extends StatefulWidget {
 class _AllCoursesWidgetState extends State<AllCoursesWidget> {
   late Future<QuerySnapshot<Map<String, dynamic>>> futureCall;
 
+  int _lecturesWatched = 0;
+
+  var _userId;
+
+  var _courseId;
+
   @override
   void initState() {
     super.initState();
@@ -197,5 +203,25 @@ class _AllCoursesWidgetState extends State<AllCoursesWidget> {
         );
       },
     );
+  }
+
+  Future<void> _getLecturesWatched() async {
+    try {
+      String documentId = '${_userId}_$_courseId';
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('userCourses')
+          .doc(documentId)
+          .get();
+
+      if (snapshot.exists) {
+        setState(() {
+          _lecturesWatched = snapshot.get('lecturesWatched') as int;
+        });
+      } else {
+        print('Document does not exist');
+      }
+    } catch (e) {
+      print('Error getting lectures watched: $e');
+    }
   }
 }

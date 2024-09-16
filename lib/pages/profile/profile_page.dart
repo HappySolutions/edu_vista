@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
+import 'package:edu_vista/blocs/theme/theme_bloc.dart';
 import 'package:edu_vista/cubit/auth_cubit.dart';
 import 'package:edu_vista/utils/color.utility.dart';
 import 'package:edu_vista/widgets/profile/profile_menu_widget.dart';
@@ -18,12 +19,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Map<String, bool> _expandedSections = {};
-  String _themeMode = 'Light';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
@@ -64,45 +63,19 @@ class _ProfilePageState extends State<ProfilePage> {
           padding: const EdgeInsets.all(20),
           color: Colors.transparent,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
                 'Change Theme Mode',
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(children: [
-                    Radio<String>(
-                      value: 'Light',
-                      groupValue: _themeMode,
-                      onChanged: (String? value) {
-                        setState(() {
-                          _themeMode = value!;
-                        });
-                      },
-                      activeColor: Colors.yellow,
-                    ),
-                    const Text(
-                      'Light',
-                    ),
-                  ]),
-                  Row(children: [
-                    Radio<String>(
-                      value: 'Dark',
-                      groupValue: _themeMode,
-                      onChanged: (String? value) {
-                        setState(() {
-                          _themeMode = value!;
-                        });
-                      },
-                      activeColor: Colors.yellow,
-                    ),
-                    const Text(
-                      'Dark',
-                    ),
-                  ]),
-                ],
+              Switch(
+                activeColor: ColorUtility.deepYellow,
+                // activeTrackColor: ColorUtility.deepYellow,
+                value: context.watch<ThemeBloc>().state == ThemeMode.dark,
+                onChanged: (value) {
+                  context.read<ThemeBloc>().add(ThemeChanged(isDark: value));
+                },
               ),
             ],
           ),
@@ -120,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
         break;
       default:
-        sectionContent = Text('No content available');
+        sectionContent = const Text('No content available');
     }
 
     return ExpansionTile(
