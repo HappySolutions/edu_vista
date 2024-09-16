@@ -66,7 +66,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   FutureOr<void> _onBuyCourse(
       BuyCourseEvent event, Emitter<CartState> emit) async {
     try {
-      totalPrice = event.cartCourse.price ?? 0.0;
       cartCourses = cartCourses
           .where((course) => course.id != event.cartCourse.id)
           .toList();
