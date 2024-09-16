@@ -39,7 +39,8 @@ class _HomePageViewState extends State<HomePageView> {
                       context,
                       CoursesPage.id,
                       arguments: <String, dynamic>{
-                        'query': 'top rated',
+                        'query': '',
+                        'selectedQuery': 'top rated',
                         'showAppbar': true,
                       },
                     );
@@ -57,7 +58,8 @@ class _HomePageViewState extends State<HomePageView> {
                       context,
                       CoursesPage.id,
                       arguments: <String, dynamic>{
-                        'query': 'top seller',
+                        'query': '',
+                        'selectedQuery': 'top seller',
                         'showAppbar': true,
                       },
                     );

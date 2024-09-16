@@ -65,6 +65,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         return MaterialPageRoute(
           builder: (context) => CoursesPage(
             query: data['query'] as String,
+            selectedQuery: data['selectedQuery'] as String,
             showAppbar: data['showAppbar'] as bool,
           ),
         );

@@ -5,10 +5,15 @@ import 'package:flutter/material.dart';
 
 class CoursesPage extends StatefulWidget {
   final String query;
+  final String selectedQuery;
   final bool showAppbar;
   static const String id = 'courses';
 
-  const CoursesPage({required this.query, super.key, required this.showAppbar});
+  const CoursesPage(
+      {required this.query,
+      required this.selectedQuery,
+      super.key,
+      required this.showAppbar});
 
   @override
   State<CoursesPage> createState() => _CoursesPageState();
@@ -103,7 +108,8 @@ class _CoursesPageState extends State<CoursesPage> {
                 : Expanded(
                     child: AllCoursesWidget(
                       query: widget.query.toLowerCase(),
-                      selectedQuery: _idDownloaded ? 'downloaded' : '',
+                      selectedQuery:
+                          _idDownloaded ? 'downloaded' : widget.selectedQuery,
                     ),
                   ),
           ],

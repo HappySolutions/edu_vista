@@ -48,14 +48,9 @@ class _AllCoursesWidgetState extends State<AllCoursesWidget> {
     if (widget.selectedQuery.isNotEmpty) {
       query =
           query.where('rank', isEqualTo: widget.selectedQuery.toLowerCase());
-    } else if (widget.query.isNotEmpty) {
-      if (widget.query == 'top rated' || widget.query == 'top seller') {
-        query = query.where('rank', isEqualTo: widget.query.toLowerCase());
-      } else {
-        query = query.where('title', isEqualTo: widget.query.toLowerCase());
-      }
     }
 
+    // Remove the title filtering from Firestore query and do it locally
     futureCall = query.get();
   }
 
@@ -80,17 +75,13 @@ class _AllCoursesWidgetState extends State<AllCoursesWidget> {
 
         // Apply client-side filtering based on the search query
         if (widget.query.isNotEmpty) {
-          if (widget.query == 'top rated' || widget.query == 'top seller') {
-            print(widget.query);
-          } else {
-            courses = courses
-                .where((course) =>
-                    course.title
-                        ?.toLowerCase()
-                        .contains(widget.query.toLowerCase()) ??
-                    false)
-                .toList();
-          }
+          courses = courses
+              .where((course) =>
+                  course.title
+                      ?.toLowerCase()
+                      .contains(widget.query.toLowerCase()) ??
+                  false)
+              .toList();
         }
 
         if (courses.isEmpty) {

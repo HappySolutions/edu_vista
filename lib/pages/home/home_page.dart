@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     const CoursesPage(
       showAppbar: false,
       query: '',
+      selectedQuery: '',
     ),
     const SearchPage(),
     const ChatPage(),
