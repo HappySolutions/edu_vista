@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MessagesPage extends StatefulWidget {
+  static const String id = 'messages';
+
   final UserModel user;
 
   const MessagesPage({super.key, required this.user});

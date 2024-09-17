@@ -1,3 +1,4 @@
+import 'package:edu_vista/pages/chat/messages_page.dart';
 import 'package:flutter/material.dart';
 import 'package:edu_vista/pages/auth/login_page.dart';
 import 'package:edu_vista/pages/auth/reset_password_page.dart';
@@ -37,6 +38,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const CategoriesPage());
     case ChatPage.id:
       return MaterialPageRoute(builder: (context) => const ChatPage());
+    case MessagesPage.id:
+      return MaterialPageRoute(
+          builder: (context) => MessagesPage(
+                user: data,
+              ));
     case ProfilePage.id:
       return MaterialPageRoute(builder: (context) => const ProfilePage());
     case SearchPage.id:

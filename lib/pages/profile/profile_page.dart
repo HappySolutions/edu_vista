@@ -86,8 +86,8 @@ class _ProfilePageState extends State<ProfilePage> {
       case 'About Us':
         sectionContent = const Column(
           children: [
-            Text('Course Title: '),
-            Text('Price: Free'),
+            Text('Eduvista App is an Educational App'),
+            Text('All Rights reserved @'),
           ],
         );
 

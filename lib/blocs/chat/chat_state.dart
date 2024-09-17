@@ -5,19 +5,37 @@ sealed class ChatState {}
 
 final class ChatInitial extends ChatState {}
 
-class UsersListLoading extends ChatState {}
+class UsersWithMessageHistoryLoading extends ChatState {}
 
-class UsersListLoaded extends ChatState {
+class UsersWithMessageHistoryLoaded extends ChatState {
   final List<UserModel> usersList;
-  UsersListLoaded({required this.usersList});
+  UsersWithMessageHistoryLoaded({required this.usersList});
 }
 
-class UsersListEmpty extends ChatState {
+class UsersWithMessageHistoryEmpty extends ChatState {
   final String message;
-  UsersListEmpty({required this.message});
+  UsersWithMessageHistoryEmpty({required this.message});
 }
 
-class UsersListError extends ChatState {
+class UsersWithMessageHistoryError extends ChatState {
   final String message;
-  UsersListError({required this.message});
+  UsersWithMessageHistoryError({required this.message});
+}
+
+// States for all users (used by the FAB dialog)
+class AllUsersLoading extends ChatState {}
+
+class AllUsersLoaded extends ChatState {
+  final List<UserModel> usersList;
+  AllUsersLoaded({required this.usersList});
+}
+
+class AllUsersEmpty extends ChatState {
+  final String message;
+  AllUsersEmpty({required this.message});
+}
+
+class AllUsersError extends ChatState {
+  final String message;
+  AllUsersError({required this.message});
 }

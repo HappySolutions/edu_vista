@@ -50,7 +50,7 @@ class _CoursesWidgetState extends State<CoursesWidget> {
           crossAxisSpacing: 15,
           shrinkWrap: true,
           crossAxisCount: 2,
-          childAspectRatio: 0.8,
+          childAspectRatio: 0.7,
           children: List.generate(limitedCourses.length, (index) {
             return InkWell(
               onTap: () {

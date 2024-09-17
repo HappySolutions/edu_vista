@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:edu_vista/blocs/chat/chat_bloc.dart';
 import 'package:edu_vista/widgets/chat/custom_chat_textformfield.dart';
 import 'package:edu_vista/blocs/message/messages_bloc.dart';
 import 'package:edu_vista/utils/color.utility.dart';
@@ -61,6 +62,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
               receiverId: widget.receiverId,
             ),
           );
+      context.read<ChatBloc>().add(GetUsersListEvent());
 
       controller.clear();
       FocusScope.of(context).unfocus();
